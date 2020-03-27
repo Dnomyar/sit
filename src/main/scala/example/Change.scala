@@ -8,30 +8,20 @@ object Change {
 
   val empty: Change = Change(Set.empty, SortedMap.empty)
 
-  def applyChanges(changes: List[Change]): SortedMap[Int, String] = {
+  def applyChanges(changes: List[Change]): SortedMap[Int, String] =
+    changes.foldLeft(IndexedList.empty[String]) {
+      case (fileAcc, change) =>
 
-    changes match {
-      case head :: next =>
-        val initFile = IndexedList.fromList(head.lineAdded.values.toList)
+        val removeLines: IndexedList[String] => IndexedList[String] =
+          change.lineRemoved.foldLeft(_)(_.delete(_))
 
-        next.foldLeft(initFile){
-          case (fileAcc, change) =>
+        val addLines: IndexedList[String] => IndexedList[String] =
+          change.lineAdded.foldLeft(_) {
+            case (file, (lineNumber, line)) => file.insertAt(lineNumber, line)
+          }
 
-            val removeLines: IndexedList[String] => IndexedList[String] =
-              change.lineRemoved.foldLeft(_)(_.delete(_))
+        (removeLines andThen addLines) (fileAcc)
+    }.asSortedMap
 
-            val addLines: IndexedList[String] => IndexedList[String] =
-              change.lineAdded.foldLeft(_){
-                case (file, (lineNumber, line)) => file.insertAt(lineNumber, line)
-              }
-
-            (removeLines andThen addLines)(fileAcc)
-        }.asSortedMap
-
-      case Nil =>
-        SortedMap.empty
-    }
-
-  }
 
 }
