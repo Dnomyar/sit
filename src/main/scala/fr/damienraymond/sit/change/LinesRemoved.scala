@@ -5,25 +5,30 @@ import scala.collection.immutable.SortedSet
 case class LinesRemoved(lines: SortedSet[Int]) {
 
   lazy val groupedByConsecutiveValues: List[SortedSet[Int]] = {
+
     @scala.annotation.tailrec
-    def groupByConsecutiveValues(lineRemoved: List[Int], acc: List[SortedSet[Int]]): List[SortedSet[Int]] = {
+    def groupByConsecutiveValues(lineRemoved: List[Int], currentGroupAcc: SortedSet[Int], groupsAcc: List[SortedSet[Int]]): List[SortedSet[Int]] = {
 
-      @scala.annotation.tailrec
-      def loop(list: List[Int], acc: SortedSet[Int]): (List[Int], SortedSet[Int]) = {
-        list match {
-          case current :: next :: tail if current + 1 == next => loop(next :: tail, acc + current)
-          case current :: next :: tail => (next :: tail, acc + current)
-          case current :: Nil => loop(Nil, acc + current)
-          case _ => (list, acc)
-        }
-      }
+      val areConsecutiveNumbers: Int => Int => Boolean = currentElement => nextElement =>
+        currentElement + 1 == nextElement
 
-      loop(lineRemoved, SortedSet.empty) match {
-        case (Nil, acc2) => acc :+ acc2
-        case (rest, acc2) => groupByConsecutiveValues(rest, acc :+ acc2)
+      lineRemoved match {
+
+        case currentElement :: nextElement :: tail if areConsecutiveNumbers(currentElement)(nextElement) =>
+          val currentGroupWithCurrentElement = currentGroupAcc + currentElement
+          groupByConsecutiveValues(nextElement :: tail, currentGroupWithCurrentElement, groupsAcc)
+
+        case head :: tail =>
+          val currentGroupWithCurrentElement = currentGroupAcc + head
+          val groupsWithNewGroupAccumulated = groupsAcc :+ currentGroupWithCurrentElement
+          val newEmptyGroup = SortedSet.empty[Int]
+          groupByConsecutiveValues(tail, newEmptyGroup, groupsWithNewGroupAccumulated)
+
+        case Nil => groupsAcc
       }
     }
-    groupByConsecutiveValues(lines.toList, List.empty)
+
+    groupByConsecutiveValues(lines.toList, SortedSet.empty, List.empty)
   }
 
 }
