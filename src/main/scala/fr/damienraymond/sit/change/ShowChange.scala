@@ -16,14 +16,15 @@ object ShowChange {
 
     val numberOfRemovedLineLowerThan: Int => Int = { n =>
       groupedByConsecutiveValues.takeWhile { group =>
-        group.exists(_ <= n) || group.maxOption.exists(_ < n)
+        val biggerThanTheGroupMaxValue = group.maxOption.exists(_ < n)
+        val nContainedInGroup = group.exists(_ <= n)
+        nContainedInGroup || biggerThanTheGroupMaxValue
       }.flatten.size
     }
 
     val addedLines: IndexedList[String] => IndexedList[String] = change.lineAdded.lines.foldLeft(_) {
       case (linesAcc, (lineIdx, line)) =>
-        val i = numberOfRemovedLineLowerThan(lineIdx)
-        val idx = lineIdx + i
+        val idx = lineIdx + numberOfRemovedLineLowerThan(lineIdx)
         linesAcc.insertAt(idx, s"+$line")
     }
 
