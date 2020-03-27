@@ -1,22 +1,24 @@
-package fr.damienraymond.sit
+package fr.damienraymond.sit.change
+
+import fr.damienraymond.sit.change.datastructure.IndexedList
 
 import scala.collection.immutable.SortedMap
 
-case class Change(lineRemoved: Set[Int], lineAdded: SortedMap[Int, String])
+case class Change(lineRemoved: LinesRemoved, lineAdded: LinesAdded)
 
 object Change {
 
-  val empty: Change = Change(Set.empty, SortedMap.empty)
+  val empty: Change = Change(LinesRemoved.empty, LinesAdded.empty)
 
   def applyChanges(changes: List[Change]): SortedMap[Int, String] =
     changes.foldLeft(IndexedList.empty[String]) {
       case (fileAcc, change) =>
 
         val removeLines: IndexedList[String] => IndexedList[String] =
-          change.lineRemoved.foldLeft(_)(_.delete(_))
+          change.lineRemoved.lines.foldLeft(_)(_.delete(_))
 
         val addLines: IndexedList[String] => IndexedList[String] =
-          change.lineAdded.foldLeft(_) {
+          change.lineAdded.lines.foldLeft(_) {
             case (file, (lineNumber, line)) => file.insertAt(lineNumber, line)
           }
 
@@ -24,6 +26,6 @@ object Change {
     }.asSortedMap
 
 
-  def diff(changes: List[Change]): String
+  def diff(changes: List[Change]): String = ???
 
 }

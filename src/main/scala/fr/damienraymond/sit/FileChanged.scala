@@ -1,5 +1,7 @@
 package fr.damienraymond.sit
 
+import fr.damienraymond.sit.change.Change
+
 case class FileChanged(filename: String, change: Change)
 
 
