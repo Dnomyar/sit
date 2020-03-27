@@ -1,4 +1,4 @@
-package example
+package fr.damienraymond.sit
 
 import scala.collection.immutable.SortedMap
 
@@ -23,5 +23,7 @@ object Change {
         (removeLines andThen addLines) (fileAcc)
     }.asSortedMap
 
+
+  def diff(changes: List[Change]): String
 
 }

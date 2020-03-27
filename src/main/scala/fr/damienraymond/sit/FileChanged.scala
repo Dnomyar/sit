@@ -1,4 +1,4 @@
-package example
+package fr.damienraymond.sit
 
 case class FileChanged(filename: String, change: Change)
 
