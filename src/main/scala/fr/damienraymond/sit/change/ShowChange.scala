@@ -2,8 +2,6 @@ package fr.damienraymond.sit.change
 
 import fr.damienraymond.sit.change.datastructure.IndexedList
 
-import scala.collection.immutable.SortedSet
-
 object ShowChange {
 
   def show(init: String, change: Change): String = {
@@ -14,24 +12,7 @@ object ShowChange {
         linesAcc.update(lineToRemove, line => s"-$line")
     }
 
-    def groupByConsecutiveValues(lineRemoved: List[Int], acc: List[SortedSet[Int]]): List[SortedSet[Int]] = {
-
-      def loop(list: List[Int], acc: SortedSet[Int]): (List[Int], SortedSet[Int]) = {
-        list match {
-          case current :: next :: tail if current + 1 == next => loop(next :: tail, acc + current)
-          case current :: next :: tail => (next :: tail, acc + current)
-          case current :: Nil => loop(Nil, acc + current)
-          case _ => (list, acc)
-        }
-      }
-
-      loop(lineRemoved, SortedSet.empty) match {
-        case (Nil, acc2) => acc :+ acc2
-        case (rest, acc2) => groupByConsecutiveValues(rest, acc :+ acc2)
-      }
-    }
-
-    val groupedByConsecutiveValues = groupByConsecutiveValues(change.lineRemoved.lines.toList.sorted, List.empty)
+    val groupedByConsecutiveValues = change.lineRemoved.groupedByConsecutiveValues
 
     val numberOfRemovedLineLowerThan: Int => Int = { n =>
       groupedByConsecutiveValues.takeWhile { group =>
