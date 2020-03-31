@@ -1,12 +1,12 @@
 package fr.damienraymond.sit.domain.model
 
 sealed trait AbstractCommit {
-  def hash: CommitHash
+  def hash: CommitHash = CommitHash("todo")
   def changes: Set[FileChanged]
 }
 
-case class OrphanCommit(hash: CommitHash, changes: Set[FileChanged]) extends AbstractCommit
+case class OrphanCommit(changes: Set[FileChanged]) extends AbstractCommit
 
-case class Commit(hash: CommitHash, parentHash: CommitHash, changes: Set[FileChanged]) extends AbstractCommit
+case class Commit(parentHash: CommitHash, changes: Set[FileChanged]) extends AbstractCommit
 
-case class MergeCommit(hash: CommitHash, parentHashes: List[CommitHash], changes: Set[FileChanged]) extends AbstractCommit
+case class MergeCommit(parentHashes: List[CommitHash], changes: Set[FileChanged]) extends AbstractCommit
