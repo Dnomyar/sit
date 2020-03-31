@@ -1,9 +1,10 @@
 package fr.damienraymond.sit.domain.model.change
 
+import fr.damienraymond.sit.domain.service.change.ShowChangeService
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class ShowChangeSpec extends AnyFlatSpec with Matchers {
+class ShowChangeServiceSpec extends AnyFlatSpec with Matchers {
 
   behavior of "ShowChange"
 
@@ -13,7 +14,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
       """hello
         |world""".stripMargin
 
-    ShowChange.show(initFile, Change.empty) should be (initFile)
+    ShowChangeService.show(initFile, Change.empty) should be (initFile)
 
   }
 
@@ -24,7 +25,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
         |world""".stripMargin
 
     val change = Change(LinesRemoved.empty, LinesAdded(1 -> "bonjour"))
-    ShowChange.show(initFile, change) should be (
+    ShowChangeService.show(initFile, change) should be (
       """hello
         |+bonjour
         |world""".stripMargin
@@ -39,7 +40,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
         |world""".stripMargin
 
     val change = Change(LinesRemoved(0), LinesAdded.empty)
-    ShowChange.show(initFile, change) should be (
+    ShowChangeService.show(initFile, change) should be (
       """-hello
         |world""".stripMargin
     )
@@ -54,7 +55,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
         |world""".stripMargin
 
     val change = Change(LinesRemoved(1), LinesAdded(1 -> "Damien"))
-    ShowChange.show(initFile, change) should be (
+    ShowChangeService.show(initFile, change) should be (
       """hello
         |-world
         |+Damien""".stripMargin
@@ -73,7 +74,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
         |lqjqwd""".stripMargin
 
     val change = Change(LinesRemoved(1,2,3,4,5,6), LinesAdded(1 -> "Damien"))
-    ShowChange.show(initFile, change) should be (
+    ShowChangeService.show(initFile, change) should be (
       """hello
         |-world
         |-qwd;lj
@@ -109,7 +110,7 @@ class ShowChangeSpec extends AnyFlatSpec with Matchers {
       8 -> "        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta debitis enim tempora ab ipsum, mollitia voluptatum est. Quasi earum quis fuga ducimus! Eligendi corporis consectetur quasi similique facere! Aliquid, totam!</p>",
       9 -> "    </div>",
     ))
-    ShowChange.show(initFile, change) should be (
+    ShowChangeService.show(initFile, change) should be (
       """<html lang="en">
         |<head>
         |    <meta charset="UTF-8">

@@ -1,8 +1,9 @@
-package fr.damienraymond.sit.domain.model.change
+package fr.damienraymond.sit.domain.service.change
 
+import fr.damienraymond.sit.domain.model.change.Change
 import fr.damienraymond.sit.domain.model.change.datastructure.IndexedList
 
-object ShowChange {
+object ShowChangeService {
 
   def show(init: String, change: Change): String = {
     val lines: IndexedList[String] = IndexedList.fromString(init)
