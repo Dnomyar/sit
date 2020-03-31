@@ -1,4 +1,4 @@
-package fr.damienraymond.sit.change
+package fr.damienraymond.sit.domain.change
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

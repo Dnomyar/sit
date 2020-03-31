@@ -1,4 +1,4 @@
-package fr.damienraymond.sit
+package fr.damienraymond.sit.domain
 
 sealed trait AbstractCommit
 
