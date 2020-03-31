@@ -1,3 +1,3 @@
 package fr.damienraymond.sit.domain.model
 
-case class Branch(name: String, head: CommitHash)
+case class Branch(name: BranchName, head: CommitHash)
