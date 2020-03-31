@@ -2,6 +2,7 @@ package fr.damienraymond.sit.change.datastructure
 
 import scala.collection.immutable.SortedMap
 
+// This data-structure was introduced because at the best of my knowledge, there is not data-structure in Scala that has this logic.
 trait IndexedList[T] { self =>
   def get(idx: Int): Option[T]
 

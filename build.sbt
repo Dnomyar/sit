@@ -9,7 +9,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "Git in Scala",
     libraryDependencies += scalaTest % Test,
-    libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC18-2"
+    libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC18-2",
+    libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.1" % "test"
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.

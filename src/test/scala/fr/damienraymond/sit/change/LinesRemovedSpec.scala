@@ -2,8 +2,11 @@ package fr.damienraymond.sit.change
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.prop.TableDrivenPropertyChecks
 
 import scala.collection.immutable.SortedSet
+import org.scalacheck.Gen
+import org.scalacheck.Prop.forAll
 
 class LinesRemovedSpec extends AnyFlatSpec with Matchers {
 
@@ -27,5 +30,19 @@ class LinesRemovedSpec extends AnyFlatSpec with Matchers {
       SortedSet(1, 2), SortedSet(4, 5)
     )
   }
+
+//  it should "have the same number of elements than the input" in {
+//
+//    val genNumber = Gen.choose(0, 10000)
+//    val sortedSetGen =
+//      Gen
+//        .listOfN(genNumber.sample.getOrElse(100), genNumber)
+//        .map(SortedSet.from(_))
+//
+//    forAll(sortedSetGen) { (numbers: SortedSet[Int]) =>
+//      LinesRemoved.apply(numbers).groupedByConsecutiveValues.flatten.size should be (numbers.size)
+//    }
+//
+//  }
 
 }
