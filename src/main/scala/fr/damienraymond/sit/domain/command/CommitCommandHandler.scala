@@ -14,12 +14,11 @@ object CommitCommandHandler extends CommandHandler[CommitRepository with Current
     for {
       currentBranch <- getCurrentBranch
       commitHistory <- getCommitHistory(currentBranch.name)
-      files = AbstractCommit.applyCommits(commitHistory)
+      files = CommitHistory.applyCommits(commitHistory)
       filesChanges <- IdentifyChangesService.identify(files)
       newCommit = commitHistory.newCommit(filesChanges)
       _ <- saveCommit(newCommit)
     } yield Set(CommitCreated(newCommit))
-
 
 
   val getCurrentBranch: ZIO[CurrentBranchRepository, Object, Branch] =

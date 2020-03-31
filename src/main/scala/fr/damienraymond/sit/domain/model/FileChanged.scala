@@ -2,7 +2,7 @@ package fr.damienraymond.sit.domain.model
 
 import fr.damienraymond.sit.domain.model.change.Change
 
-case class FileChanged(filename: String, change: Change)
+case class FileChanged(filename: Filename, change: Change)
 
 
 object FileChanged {

@@ -1,3 +1,5 @@
 package fr.damienraymond.sit.domain.model
 
-case class File()
+import scala.collection.immutable.SortedMap
+
+case class File(filename: Filename, content: SortedMap[Int, String])
