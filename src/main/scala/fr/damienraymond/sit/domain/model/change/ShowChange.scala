@@ -1,6 +1,6 @@
-package fr.damienraymond.sit.domain.change
+package fr.damienraymond.sit.domain.model.change
 
-import fr.damienraymond.sit.domain.change.datastructure.IndexedList
+import fr.damienraymond.sit.domain.model.change.datastructure.IndexedList
 
 object ShowChange {
 

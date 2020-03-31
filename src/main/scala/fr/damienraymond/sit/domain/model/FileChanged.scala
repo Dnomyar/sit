@@ -1,6 +1,6 @@
-package fr.damienraymond.sit.domain
+package fr.damienraymond.sit.domain.model
 
-import fr.damienraymond.sit.domain.change.Change
+import fr.damienraymond.sit.domain.model.change.Change
 
 case class FileChanged(filename: String, change: Change)
 

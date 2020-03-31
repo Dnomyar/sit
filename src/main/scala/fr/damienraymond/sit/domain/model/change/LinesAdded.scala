@@ -1,4 +1,4 @@
-package fr.damienraymond.sit.domain.change
+package fr.damienraymond.sit.domain.model.change
 
 import scala.collection.immutable.SortedMap
 
