@@ -4,8 +4,8 @@ This project is a playground to experiment with domain modeling, algorithms, dat
 
 Features:
 - [ ] `git diff`: show changes made to parts of file (with `+` and `-` at the beginning of the lines). Highlights:
-    - Introduced `IndexedList[T]` data-structure. 
-    - A change is described by a set (i.e. `Set(2,3,4,7,678)`) of line removed and a map for line added (i.e. `Map(34 -> "new line", 567 -> "other line")`)
+    - [x] Introduced `IndexedList[T]` data-structure. 
+    - [x] A change is described by a set (i.e. `Set(2,3,4,7,678)`) of line removed and a map for line added (i.e. `Map(34 -> "new line", 567 -> "other line")`)
 - [ ] Commits
 
 
