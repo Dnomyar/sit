@@ -3,10 +3,18 @@
 This project is a playground to experiment with domain modeling, algorithms, data structures and functional effects.
 
 Features:
-- [ ] `git diff`: show changes made to parts of file (with `+` and `-` at the beginning of the lines). Highlights:
-    - [x] Introduced `IndexedList[T]` data-structure. 
-    - [x] A change is described by a set (i.e. `Set(2,3,4,7,678)`) of line removed and a map for line added (i.e. `Map(34 -> "new line", 567 -> "other line")`)
+- [ ] Diff (or change): show changes made to parts of file (with `+` and `-` at the beginning of the lines). 
+    - [ ] Data-structure `IndexedList[T]` (see below). 
+    - [ ] Model `Change` ADT (`LinesAdded` and `LinesRemoved`)
+    - [ ] Service `IdentifyChangesService` and `ShowChangeService` 
 - [ ] Commits
+    - [ ] Model `AbstractCommit` ADT (`OrphanCommit`, `Commit` and `MergeCommit`), `CommitHash` and `CommitHistory`
+    - [ ] Repository `CommitRepository`
+- [ ] Files
+    - [ ] Model `File`, `FileChanged` and `Filename`
+- [ ] Branch
+    - [ ] Model `Branch`, `Branches` and `BranchName`
+    - [ ] Repository `CurrentBranchRepository`
 
 
 ## Data-structures
