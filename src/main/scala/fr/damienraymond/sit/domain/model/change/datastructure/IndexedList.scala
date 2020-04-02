@@ -12,10 +12,13 @@ trait IndexedList[T] { self =>
 
   def update(idx: Int, f: T => T): IndexedList[T]
 
+  def size: Int
+
   def asSortedMap: SortedMap[Int, T]
 }
 
 // List is probably not the right data structure in that case
+// I am not looking for a efficient implementation for the moment
 private class ListIndexedList[T](list: List[T]) extends IndexedList[T] {
 
   override def get(idx: Int): Option[T] = list.drop(idx).headOption
@@ -36,6 +39,8 @@ private class ListIndexedList[T](list: List[T]) extends IndexedList[T] {
       .map(list.updated(idx, _))
       .map(new ListIndexedList(_))
       .getOrElse(this)
+
+  override def size: Int = list.size
 
   override val asSortedMap: SortedMap[Int, T] = SortedMap.from(LazyList.from(0).zip(list))
 }

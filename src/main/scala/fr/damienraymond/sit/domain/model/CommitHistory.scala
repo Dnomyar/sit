@@ -30,7 +30,8 @@ object CommitHistory {
 
   def applyCommits(commits: CommitHistory): Set[File] = {
     commits.groupChangesByFile
-      .view.mapValues(Change.applyChanges)
+      .view
+      .mapValues(Change.applyChanges)
       .map {
         case (filename, content) => File(filename, content)
       }
