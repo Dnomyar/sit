@@ -29,7 +29,11 @@ Main operations :
 - `insertAt(idx: Int, t: T): IndexedList[T]`
 - `update(idx: Int, f: T => T): IndexedList[T]`
 
-## Katas
+## Katas / Dojo
+As this project covers a lot of different skills (domain modeling, algorithms, data structures, CQRS/ES, functional effects, etc.), it is a great opportunity to share some knowledge. 
+
+Here are the details of the 1h katas/dojos organized using this project : 
+
 ### #1 Implementing `ShowChangeService` (algorithm)
 The idea of this kata is to implement the function `ShowChangeService.show(init: String, change: Change): String`. The goal of this function is to replicate the output of `git diff` (line added with `+` and line removed with a `-` at the beginning).
 
