@@ -17,18 +17,6 @@ This project is a playground to experiment with domain modeling, algorithms, dat
     - [ ] Repository `CurrentBranchRepository`
 
 
-## Data-structures
-
-### `IndexedList[T]`
-
-This abstraction purpose is to deal with insertion and deletion of lines at some index. For the moment, the implementation is using a (Linked)List which is convenient because it is ordered and the insertion shifts all the indexes (line number in our case). However, in terms of performance, it is probably not the best.
-
-Main operations :
-- `get(idx: Int): Option[T]`
-- `delete(idx: Int): IndexedList[T]`
-- `insertAt(idx: Int, t: T): IndexedList[T]`
-- `update(idx: Int, f: T => T): IndexedList[T]`
-
 ## Katas / Dojo
 As this project covers a lot of different skills (domain modeling, algorithms, data structures, CQRS/ES, functional effects, etc.), it is a great opportunity to share some knowledge. 
 
@@ -47,3 +35,16 @@ The idea of this kata is to start to explore how commits can be modeled and star
 - 1 - How to represent a single commit? What are the main properties of a commit? Is there different types of commit? 
 - 2 - (if enough time) A commit by itself is not enough. How to represent a collection of commit?   
   
+  
+ 
+## Data-structures
+
+### `IndexedList[T]`
+
+This abstraction purpose is to deal with insertion and deletion of lines at some index. For the moment, the implementation is using a (Linked)List which is convenient because it is ordered and the insertion shifts all the indexes (line number in our case). However, in terms of performance, it is probably not the best.
+
+Main operations :
+- `get(idx: Int): Option[T]`
+- `delete(idx: Int): IndexedList[T]`
+- `insertAt(idx: Int, t: T): IndexedList[T]`
+- `update(idx: Int, f: T => T): IndexedList[T]`
