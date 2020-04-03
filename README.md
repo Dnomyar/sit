@@ -2,7 +2,7 @@
 
 This project is a playground to experiment with domain modeling, algorithms, data structures and functional effects.
 
-Features:
+## Details of features
 - [ ] Diff (or change): show changes made to parts of file (with `+` and `-` at the beginning of the lines). 
     - [ ] Data-structure `IndexedList[T]` (see below). 
     - [ ] Model `Change` ADT (`LinesAdded` and `LinesRemoved`)
