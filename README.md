@@ -37,7 +37,7 @@ The challenge here is to make sure that you are not interleaving line added and 
 
 This test exposes the issue: https://github.com/Dnomyar/sit/blob/925bcf95b676149a130b8ee5451d547ece1df682/src/test/scala/fr/damienraymond/sit/change/ShowChangeSpec.scala#L64-L86
 
-### 2# Exploring Commit domain model (domain modeling, event sourcing)
+### #2 Exploring Commit domain model (domain modeling, event sourcing)
 The idea of this kata is to start to explore how commits can be modeled and start to think about commit event sourcing.
 
 - 1 - How to represent a single commit? What are the main properties of a commit? Is there different types of commit? 
