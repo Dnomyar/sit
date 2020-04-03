@@ -23,7 +23,7 @@ As this project covers a lot of different skills (domain modeling, algorithms, d
 Here are the details of the 1h katas/dojos organized using this project : 
 
 ### #1 Implementing `ShowChangeService` (algorithm)
-The idea of this kata is to implement the function `ShowChangeService.show(init: String, change: Change): String`. The goal of this function is to replicate the output of `git diff` (line added with `+` and line removed with a `-` at the beginning).
+The idea of this kata is to implement the function [`ShowChangeService.show(init: String, change: Change): String`](https://github.com/Dnomyar/sit/blob/925bcf95b676149a130b8ee5451d547ece1df682/src/main/scala/fr/damienraymond/sit/change/ShowChange.scala#L9) . The goal of this function is to replicate the output of `git diff` (line added with `+` and line removed with a `-` at the beginning).
 
 The challenge here is to make sure that you are not interleaving line added and line removed. The expected behevior is that every block of line added should be added after a block of line removed.
 
