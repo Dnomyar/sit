@@ -1,6 +1,6 @@
-package fr.damienraymond.sit.domain.model.change
+package fr.damienraymond.sit.domain.service.change
 
-import fr.damienraymond.sit.domain.service.change.ShowChangeService
+import fr.damienraymond.sit.domain.model.change.{Change, LinesAdded, LinesRemoved}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

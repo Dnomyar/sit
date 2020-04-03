@@ -27,4 +27,19 @@ Main operations :
 - `get(idx: Int): Option[T]`
 - `delete(idx: Int): IndexedList[T]`
 - `insertAt(idx: Int, t: T): IndexedList[T]`
-- `update(idx: Int, f: T => T): IndexedList[T]` 
+- `update(idx: Int, f: T => T): IndexedList[T]`
+
+## Katas
+### #1 Implementing `ShowChangeService` (algorithm)
+The idea of this kata is to implement the function `ShowChangeService.show(init: String, change: Change): String`. The goal of this function is to replicate the output of `git diff` (line added with`+` and line removed with a `-` at the beginning).
+
+The challenge here is to make sure that you are not interleaving line added and line removed. The expected behevior is that every block of line added should be added after a block of line removed.
+
+This test exposes the issue: https://github.com/Dnomyar/sit/blob/925bcf95b676149a130b8ee5451d547ece1df682/src/test/scala/fr/damienraymond/sit/change/ShowChangeSpec.scala#L64-L86
+
+### 2# Exploring Commit domain model (domain modeling, event sourcing)
+The idea of this kata is to start to explore how commits can be modeled and start to think about commit event sourcing.
+
+- 1 - How to represent a single commit? What are the main properties of a commit? Is there different type of commit?
+- 2 - (if enough time) A commit by itself is not enough. How to represent a collection of commit?   
+  
