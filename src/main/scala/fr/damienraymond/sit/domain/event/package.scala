@@ -1,6 +1,6 @@
 package fr.damienraymond.sit.domain
 
-import fr.damienraymond.sit.domain.model.AbstractCommit
+import fr.damienraymond.sit.domain.model.commit.AbstractCommit
 
 package object event {
 

@@ -1,4 +1,6 @@
-package fr.damienraymond.sit.domain.model
+package fr.damienraymond.sit.domain.model.commit
+
+import fr.damienraymond.sit.domain.model.FileChanged
 
 sealed trait AbstractCommit {
   def hash: CommitHash = CommitHash("todo")

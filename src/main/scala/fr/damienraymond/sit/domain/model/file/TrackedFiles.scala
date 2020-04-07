@@ -1,3 +1,3 @@
-package fr.damienraymond.sit.domain.model
+package fr.damienraymond.sit.domain.model.file
 
 case class TrackedFiles(files: Set[Filename])

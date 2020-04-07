@@ -1,6 +1,9 @@
 package fr.damienraymond.sit.domain.model.change
 
-import fr.damienraymond.sit.domain.model.{Commit, CommitHistory, FileChanged, Filename, OrphanCommit}
+import fr.damienraymond.sit.domain.model
+import fr.damienraymond.sit.domain.model.commit.{Commit, OrphanCommit}
+import fr.damienraymond.sit.domain.model.file.Filename
+import fr.damienraymond.sit.domain.model.{Commit, CommitHistory, FileChanged, Filename}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -21,8 +24,8 @@ class CommitHistorySpec extends AnyFlatSpec with Matchers {
     val commit2File2Change = Change.fromLineAdded(LinesAdded(0 -> "bonjour"))
 
     val commit2 = Commit(commit1.hash, Set(
-      FileChanged(file1, commit2File1Change),
-      FileChanged(file2, commit2File2Change)
+      model.FileChanged(file1, commit2File1Change),
+      model.FileChanged(file2, commit2File2Change)
     ))
 
 

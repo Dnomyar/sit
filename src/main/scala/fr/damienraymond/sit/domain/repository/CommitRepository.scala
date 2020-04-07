@@ -1,6 +1,8 @@
 package fr.damienraymond.sit.domain.repository
 
-import fr.damienraymond.sit.domain.model.{AbstractCommit, BranchName, CommitHash, CommitHistory}
+import fr.damienraymond.sit.domain.model.branch.BranchName
+import fr.damienraymond.sit.domain.model.commit.{AbstractCommit, CommitHash, CommitHistory}
+import fr.damienraymond.sit.domain.model.{CommitHash, CommitHistory}
 import zio.IO
 
 trait CommitRepository extends Repository[CommitHash, AbstractCommit] {

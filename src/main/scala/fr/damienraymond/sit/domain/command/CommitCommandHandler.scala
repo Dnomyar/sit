@@ -2,7 +2,9 @@ package fr.damienraymond.sit.domain.command
 
 import fr.damienraymond.sit.domain.command.CommitCommandHandlerError.CurrentBranchNotFound
 import fr.damienraymond.sit.domain.event.CommitCreated
-import fr.damienraymond.sit.domain.model.{AbstractCommit, Branch, BranchName, CommitHistory}
+import fr.damienraymond.sit.domain.model.branch.{Branch, BranchName}
+import fr.damienraymond.sit.domain.model.commit.{AbstractCommit, CommitHistory}
+import fr.damienraymond.sit.domain.model.{BranchName, CommitHistory}
 import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository}
 import fr.damienraymond.sit.domain.service.change.IdentifyChangesService
 import fr.damienraymond.sit.domain.{event, repository}

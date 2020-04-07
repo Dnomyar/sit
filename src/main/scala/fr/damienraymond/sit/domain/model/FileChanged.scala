@@ -1,6 +1,7 @@
 package fr.damienraymond.sit.domain.model
 
 import fr.damienraymond.sit.domain.model.change.Change
+import fr.damienraymond.sit.domain.model.file.Filename
 
 case class FileChanged(filename: Filename, change: Change)
 

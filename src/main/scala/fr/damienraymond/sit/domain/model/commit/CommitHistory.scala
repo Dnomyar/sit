@@ -1,6 +1,8 @@
-package fr.damienraymond.sit.domain.model
+package fr.damienraymond.sit.domain.model.commit
 
 import fr.damienraymond.sit.domain.model.change.Change
+import fr.damienraymond.sit.domain.model.file.{File, Filename}
+import fr.damienraymond.sit.domain.model.{FileChanged, file}
 
 case class CommitHistory private(commits: List[AbstractCommit]) {
 
@@ -33,7 +35,7 @@ object CommitHistory {
       .view
       .mapValues(Change.applyChanges)
       .map {
-        case (filename, content) => File(filename, content)
+        case (filename, content) => file.File(filename, content)
       }
       .toSet
   }
