@@ -1,7 +1,7 @@
 package fr.damienraymond.sit.domain.service.change
 
+import fr.damienraymond.sit.domain.model.FileChanged
 import fr.damienraymond.sit.domain.model.file.{File, Filename}
-import fr.damienraymond.sit.domain.model.{FileChanged, Filename}
 import zio.IO
 import zio.stream._
 

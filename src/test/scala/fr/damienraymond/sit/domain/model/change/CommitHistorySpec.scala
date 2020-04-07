@@ -1,9 +1,9 @@
 package fr.damienraymond.sit.domain.model.change
 
 import fr.damienraymond.sit.domain.model
-import fr.damienraymond.sit.domain.model.commit.{Commit, OrphanCommit}
+import fr.damienraymond.sit.domain.model.FileChanged
+import fr.damienraymond.sit.domain.model.commit.{Commit, CommitHistory, OrphanCommit}
 import fr.damienraymond.sit.domain.model.file.Filename
-import fr.damienraymond.sit.domain.model.{Commit, CommitHistory, FileChanged, Filename}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
