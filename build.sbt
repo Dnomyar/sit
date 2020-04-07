@@ -10,6 +10,7 @@ lazy val root = (project in file("."))
     name := "Git in Scala",
     libraryDependencies += scalaTest % Test,
     libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC18-2",
+    libraryDependencies += "dev.zio" %% "zio-streams" % "1.0.0-RC18-2",
     libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.1" % "test"
   )
 
