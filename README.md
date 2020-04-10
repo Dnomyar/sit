@@ -17,6 +17,9 @@ This project is a playground to experiment with domain modeling, algorithms, dat
     - [ ] Repository `CurrentBranchRepository`
 
 
+### Commands
+- [ ] `CommitCommand` and `CommitCommandHandler`
+
 ## Katas / Dojo
 As this project covers a lot of different skills (domain modeling, algorithms, data structures, CQRS/ES, functional effects, etc.), it is a great opportunity to share some knowledge. 
 
