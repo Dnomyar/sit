@@ -1,7 +1,7 @@
 package fr.damienraymond.sit.domain
 
 import fr.damienraymond.sit.domain.event.Event
-import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository, FileLastUpdateRepository}
+import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository, FileLastUpdateRepository, TrackedFilesRepository}
 import fr.damienraymond.sit.domain.service.change.{GetFileLastUpdate, IdentifyChangesService, IdentifyUpdatedFile}
 import zio.ZIO
 
@@ -23,10 +23,11 @@ package object command {
 
   val currentBranchRepository: CurrentBranchRepository = ???
   val commitRepository: CommitRepository = ???
+  val trackedFilesRepository: TrackedFilesRepository = ???
 
   val fileLastUpdateRepository: FileLastUpdateRepository = ???
   val getFileLastUpdate: GetFileLastUpdate = ???
   val identifyUpdatedFile: IdentifyUpdatedFile = new IdentifyUpdatedFile(fileLastUpdateRepository, getFileLastUpdate)
-  val identifyChangesService: IdentifyChangesService = new IdentifyChangesService(identifyUpdatedFile)
+  val identifyChangesService: IdentifyChangesService = new IdentifyChangesService(trackedFilesRepository, identifyUpdatedFile)
 
 }
