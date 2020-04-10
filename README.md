@@ -27,10 +27,12 @@ The idea of this kata is to implement the function [`ShowChangeService.show(init
 
 The challenge here is to make sure that you are not interleaving line added and line removed. The expected behevior is that every block of line added should be added after a block of line removed.
 
-This test exposes the issue: https://github.com/Dnomyar/sit/blob/925bcf95b676149a130b8ee5451d547ece1df682/src/test/scala/fr/damienraymond/sit/change/ShowChangeSpec.scala#L64-L86
+[Here is the test](https://github.com/Dnomyar/sit/blob/925bcf95b676149a130b8ee5451d547ece1df682/src/test/scala/fr/damienraymond/sit/change/ShowChangeSpec.scala#L64-L86)
 
 ### #2 Exploring Commit domain model (domain modeling)
 The idea of this kata is to start to explore how commits can be modeled and start to think about commit event sourcing. How to represent a single commit? What are the main properties of a commit? Is there different types of commit? 
+
+[Here is the code](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/main/scala/fr/damienraymond/sit/domain/model/commit/AbstractCommit.scala#L5-L14)
   
   
 ### #3 Commit Event Sourcing (event sourcing and domain modeling)
@@ -38,6 +40,9 @@ The idea of this kata would be to continue the work done in the previous kata (d
 
 It would be the opportunity to cover a bit of domain modeling (how to represent a collection of commit) and event sourcing (implementation of applying commits)
 
+[Here is the code](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/main/scala/fr/damienraymond/sit/domain/model/commit/CommitHistory.scala#L7-L42)
+
+[Here is the test](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/test/scala/fr/damienraymond/sit/domain/model/change/CommitHistorySpec.scala#L10)
   
  
 ## Data-structures
