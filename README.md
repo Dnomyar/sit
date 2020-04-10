@@ -20,7 +20,7 @@ This project is a playground to experiment with domain modeling, algorithms, dat
     - [ ] Repository `CurrentBranchRepository`
 
 
-### Commands
+### CQRS - Commands
 - [ ] `CommitCommand` and `CommitCommandHandler`
 
 ## Katas / Dojo
