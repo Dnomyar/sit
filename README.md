@@ -62,3 +62,7 @@ Main operations :
 - `delete(idx: Int): IndexedList[T]`
 - `insertAt(idx: Int, t: T): IndexedList[T]`
 - `update(idx: Int, f: T => T): IndexedList[T]`
+
+
+## Sources 
+- How different are different diff algorithms in Git? https://link.springer.com/article/10.1007/s10664-019-09772-z
