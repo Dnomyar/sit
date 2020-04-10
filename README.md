@@ -41,14 +41,16 @@ The idea of this kata is to start to explore how commits can be modeled and star
 [Here is the code](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/main/scala/fr/damienraymond/sit/domain/model/commit/AbstractCommit.scala#L5-L14)
   
   
-### #3 Commit Event Sourcing (event sourcing and domain modeling)
+### #3 Commit Event Sourcing (folding, event sourcing and domain modeling)
 The idea of this kata would be to continue the work done in the previous kata (domain modeling of a commit) in order to handle a collection of commit.
+
+To simplify, we are going to work only with one file. The goal is to implement a function that take a list of changes and that returns the file as an output. 
 
 It would be the opportunity to cover a bit of domain modeling (how to represent a collection of commit) and event sourcing (implementation of applying commits)
 
-[Here is the code](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/main/scala/fr/damienraymond/sit/domain/model/commit/CommitHistory.scala#L7-L42)
+[Here is the code](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/main/scala/fr/damienraymond/sit/domain/model/change/Change.scala#L16-L29)
 
-[Here is the test](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/test/scala/fr/damienraymond/sit/domain/model/change/CommitHistorySpec.scala#L10)
+[Here is the test](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/test/scala/fr/damienraymond/sit/domain/model/change/ChangeSpec.scala#L13-L49)
   
  
 ## Data-structures
