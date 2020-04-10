@@ -5,20 +5,18 @@ import fr.damienraymond.sit.domain.model.file.{File, Filename}
 import zio.IO
 import zio.stream._
 
-object IdentifyChangesService {
+class IdentifyChangesService(identifyUpdatedFile: IdentifyUpdatedFile) {
 
-  def identify(state: Set[File]): IO[Any, Set[FileChanged]] =
+  def identify(state: Set[File]) =
     Stream
       .fromEffect(getTrackedFiles)
       .flatMap(Stream.fromIterable(_))
-      .filterM(identifyIfFileWasUpdated)
+      .filterM(identifyUpdatedFile.identifyUpdatedFile)
       .mapM(identifyChange)
-      .run(Sink.collectAllToSet)
+      .run(Sink.collectAllToSet[FileChanged])
 
-  def getTrackedFiles: IO[Any, Set[Filename]] = ???
+  private def getTrackedFiles: IO[Any, Set[Filename]] = ???
 
-  def identifyIfFileWasUpdated(filename: Filename): IO[Any, Boolean] = ???
-
-  def identifyChange(filename: Filename): IO[Any, FileChanged] = ???
+  private def identifyChange(filename: Filename): IO[Any, FileChanged] = ???
 
 }

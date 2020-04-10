@@ -4,7 +4,7 @@ import zio.IO
 
 package object repository {
 
-  sealed trait RepositoryError
+  sealed trait RepositoryError extends Exception
 
   trait Repository[ID, T] {
     def getAll: IO[RepositoryError, Option[T]]
