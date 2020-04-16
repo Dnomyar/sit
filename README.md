@@ -55,7 +55,9 @@ It would be the opportunity to cover a bit of domain modeling (how to represent 
 ### # Group by consecutive values (algorithm)
 As far as I know, when git is displaying changes, it groups consecutive line removed together. After the block of line removed, line added are displayed. This is part of kata `#1` that we did not have time to do.
 
-Line removed is represented as `SortedSet[Int]`. The goal is to write the function that is going to create `List[SortedSet[Int]]` where the list contains set composed only of consecutive numbers.
+Line removed is represented as `SortedSet[Int]`. The goal is to write the function that is going to create `List[SortedSet[Int]]` where the list contains set composed only of consecutive numbers. 
+
+The challenge here is to write an easily understandable function the has a correct time complexity (`O(n)`).
 
 Example :
 ```
