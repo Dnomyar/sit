@@ -52,6 +52,16 @@ It would be the opportunity to cover a bit of domain modeling (how to represent 
 
 [Here is the test](https://github.com/Dnomyar/sit/blob/3c468bd248d4d6f8405bd465b369c8bed47aa928/src/test/scala/fr/damienraymond/sit/domain/model/change/ChangeSpec.scala#L13-L49)
   
+### # Group by consecutive values (algorithm)
+As far as I know, when git is displaying changes, it groups consecutive line removed together. After the block of line removed, line added are displayed. This is part of kata #1 that we did not had time to do.
+
+Line removed is represented as `SortedSet[Int]`. The goal is to write the function that is going to create `List[SortedSet[Int]]` where the list contains set composed only of consecutive numbers.
+
+Example :
+```
+val list = SortedSet(1,2,3,10,11,12,60)
+val output = List(SortedSet(1,2,3), SortedSet(10,11,12), SortedSet(60))
+```
  
 ## Data-structures
 
