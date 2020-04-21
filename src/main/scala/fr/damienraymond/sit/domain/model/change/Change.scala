@@ -13,6 +13,9 @@ object Change {
   def fromLineAdded(lineAdded: LinesAdded): Change =
     Change(LinesRemoved.empty, lineAdded)
 
+  def fromLineRemoved(linesRemoved: LinesRemoved): Change =
+    Change(linesRemoved, LinesAdded.empty)
+
   def applyChanges(changes: List[Change]): SortedMap[Int, String] =
     changes.foldLeft(IndexedList.empty[String]) {
       case (fileAcc, change) =>
