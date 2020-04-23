@@ -51,7 +51,7 @@ class MyersExperimentationSpec extends Properties("MyersExperimentation") {
 //    }
 
   property("test") = Prop.forAll { (v1: String, v2: String) =>
-
+//{
 //    val v1 = "ABB"
 //    val v2 = "CA"
 

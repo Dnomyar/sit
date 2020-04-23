@@ -86,144 +86,132 @@ object MyersExperimentation extends App {
 
 
   //  def myers(original: SortedMap[Int, String], newVersion: SortedMap[Int, String]): Option[(Int, List[((Int, Int), Op)])] = {
-  def myers(original: SortedMap[Int, String], newVersion: SortedMap[Int, String]): Option[(Int, List[(Coord, (List[String], List[String]), Op)])] = {
+  def myers(original: SortedMap[Int, String], newVersion: SortedMap[Int, String]): Option[(Int, List[(Coord, Op)])] = {
 
     val expectedCoord = (original.size, newVersion.size)
     println(expectedCoord)
 
     @scala.annotation.tailrec
-    def loop(currents: Set[(Int, List[(Coord, Op)])]): Set[(Int, List[(Coord, Op)])] = {
-
-      println(currents)
-
-      val results = currents.filter(_._2.headOption.exists(_._1 == expectedCoord))
-
-      if (results.nonEmpty) results
-      else {
-        val explorationResult =
-          currents.flatMap {
-            case (cost, history) =>
-              explore(cost, history)
-          }
-
-        if (explorationResult.isEmpty) {
-          println("no convergence")
-          currents
-        }
-        else loop(explorationResult)
-      }
-
-
-    }
-
-    @scala.annotation.tailrec
-    def loop2(currents: Set[(Int, List[(Coord, (List[String], List[String]), Op)])]): Set[(Int, List[(Coord, (List[String], List[String]), Op)])] = {
+    def loop2(currents: Set[(Int, List[(Coord, Op)])]): Set[(Int, List[(Coord, Op)])] = {
 
       val results = currents.collect {
-        case result@(_, (_, (vxs, vys), _) :: _) if vxs.isEmpty && vys.isEmpty => result
+        case result@(_, (coord, _) :: _) if coord == expectedCoord => result
       }
 
 
-      if (results.nonEmpty) results
+
+//      println()
+//      println(s"currents.size = ${currents.size}")
+//      println(currents.map(_._2.map(_._1)).mkString("\n"))
+
+      val exploredCoords = currents.flatMap(_._2.map(_._1)).toSet
+
+      if (currents.isEmpty) {
+        println("non convegent")
+        currents
+      } else if (results.nonEmpty) results
       else {
         val explorationResult =
-          currents.flatMap {
+          currents
+            .flatMap {
             case (cost, history) =>
-              explore2(cost, history)
+
+              history match {
+                case ((x, y), _) :: _ =>
+
+                  (original.get(x), newVersion.get(y)) match {
+                    case (Some(vx), Some(vy)) if vx == vy =>
+                      Set((cost, ((x + 1, y + 1), Keep(original(x))) :: history))
+                    case (maybeVx, maybeVy) =>
+                      Set(
+                        maybeVx.map(vx =>
+                          (cost + 1, ((x + 1, y), Rem(vx, x)) :: history)
+                        ),
+                        maybeVy.map(vy =>
+                          (cost + 1, ((x, y + 1), Add(vy, y)) :: history)
+                        )
+                      ).flatten
+
+
+                  }
+                case Nil =>
+                  throw new Exception("A starting point should be provided")
+              }
+
+
           }
 
-        loop2(explorationResult)
+
+//        pritn
+
+
+        loop2(
+          explorationResult
+          .filterNot(_._2.headOption.exists(c => exploredCoords.contains(c._1)))
+        )
       }
 
 
     }
 
 
-    def explore2(cost: Int, history: List[(Coord, (List[String], List[String]), Op)]): Set[(Int, List[(Coord, (List[String], List[String]), Op)])] = history match {
-      case (_, (Nil, Nil), _) :: _ => Set.empty
-
-      case ((x, y), (vx :: vxs, vy :: vys), _) :: _ if vx == vy =>
-
-        loop2(Set((cost, ((x + 1, y + 1), (vxs, vys), Keep(vx)) :: history)))
-
-      case ((x, y), (vxs, vys), _) :: _ =>
-
-        loop2(Set(
-          vxs.headOption.map(_ => vxs.tail).map(vxsTail =>
-            (cost + 1, ((x + 1, y), (vxsTail, vys), Rem(vxs.head, x)) :: history)
-          ),
-          vys.headOption.map(_ => vys.tail).map(vysTail =>
-            (cost + 1, ((x, y + 1), (vxs, vysTail), Add(vys.head, y)) :: history)
-          )
-        ).flatten)
-
-      //        println(s"($x, $y)")
-      //        val res = (original.get(x), newVersion.get(y)).mapN {
-      //          case (xV, yV) if xV == yV => // is a diagonal
-      //            loop(Set((cost, ((x + 1, y + 1), Keep(xV)) :: history)))
-      //          case (xV, yV) =>
-      //            loop(Set(
-      //              (cost + 1, ((x, y + 1), Add(yV, y)) :: history),
-      //              (cost + 1, ((x + 1, y), Rem(xV, x)) :: history)
-      //            ))
-      //        }.getOrElse(Set.empty)
-
-      //        println(s"res ($x, $y) - $original - $newVersion -- $res")
-      //
-      //        res
-
-      case Nil =>
-        throw new Exception("A starting point should be provided")
-    }
-
-
-    def explore(cost: Int, history: List[(Coord, Op)]): Set[(Int, List[(Coord, Op)])] = history match {
-      case ((x, y), _) :: _ =>
-        println(s"($x, $y)")
-        val res = (original.get(x), newVersion.get(y)).mapN {
-          case (xV, yV) if xV == yV => // is a diagonal
-            loop(Set((cost, ((x + 1, y + 1), Keep(xV)) :: history)))
-          case (xV, yV) =>
-            loop(Set(
-              (cost + 1, ((x, y + 1), Add(yV, y)) :: history),
-              (cost + 1, ((x + 1, y), Rem(xV, x)) :: history)
-            ))
-        }.getOrElse(Set.empty)
-
-        println(s"res ($x, $y) - $original - $newVersion -- $res")
-
-        res
-
-      case Nil =>
-        throw new Exception("A starting point should be provided")
-    }
-
-
-    //    println("(x,y) where x abs and y ord")
+    //    def explore2(cost: Int, history: List[(Coord, Op)]): Set[(Int, List[(Coord, Op)])] = history match {
+    //      case (_, (Nil, Nil), _) :: _ => Set.empty
     //
-    //    println(s"original = ${original}")
-    //    println(s"newVersion = ${newVersion}")
+    //      case ((x, y), (vx :: vxs, vy :: vys), _) :: _ if vx == vy =>
+    //
+    //        loop2(Set((cost, ((x + 1, y + 1), (vxs, vys), Keep(vx)) :: history)))
+    //
+    //      case ((x, y), (vxs, vys), _) :: _ =>
+    //
+    //        loop2(Set(
+    //          vxs.headOption.map(_ => vxs.tail).map(vxsTail =>
+    //            (cost + 1, ((x + 1, y), (vxsTail, vys), Rem(vxs.head, x)) :: history)
+    //          ),
+    //          vys.headOption.map(_ => vys.tail).map(vysTail =>
+    //            (cost + 1, ((x, y + 1), (vxs, vysTail), Add(vys.head, y)) :: history)
+    //          )
+    //        ).flatten)
+    //
+    //      //        println(s"($x, $y)")
+    //      //        val res = (original.get(x), newVersion.get(y)).mapN {
+    //      //          case (xV, yV) if xV == yV => // is a diagonal
+    //      //            loop(Set((cost, ((x + 1, y + 1), Keep(xV)) :: history)))
+    //      //          case (xV, yV) =>
+    //      //            loop(Set(
+    //      //              (cost + 1, ((x, y + 1), Add(yV, y)) :: history),
+    //      //              (cost + 1, ((x + 1, y), Rem(xV, x)) :: history)
+    //      //            ))
+    //      //        }.getOrElse(Set.empty)
+    //
+    //      //        println(s"res ($x, $y) - $original - $newVersion -- $res")
+    //      //
+    //      //        res
+    //
+    //      case Nil =>
+    //        throw new Exception("A starting point should be provided")
+    //    }
 
 
-    loop2(Set((0, List(((0, 0), (original.values.toList, newVersion.values.toList), Keep(""))))))
+    loop2(Set((0, List(((0, 0), Keep(""))))))
       .toList
       .sortBy(_._1)
       .headOption
   }
 
 
-  def myers(original: List[String], newVersion: List[String]): Option[(Int, List[(Coord, (List[String], List[String]), Op)])] = {
+  def myers(original: List[String], newVersion: List[String]): Option[(Int, List[(Coord, Op)])] = {
     val originalWithIndex: Map[Int, String] = LazyList.from(0).zip(original).toMap
     val newVersionWithIndex: Map[Int, String] = LazyList.from(0).zip(newVersion).toMap
     myers(SortedMap.from(originalWithIndex), SortedMap.from(newVersionWithIndex))
   }
 
 
-  def myersTest(original: String, newVersion: String): Option[(Int, List[(Coord, (List[String], List[String]), Op)])] =
+  def myersTest(original: String, newVersion: String): Option[(Int, List[(Coord, Op)])] =
     myers(original.split("").toList, newVersion.split("").toList)
 
 
-  def toChange(myersResult: Option[(Int, List[(Coord, (List[String], List[String]), Op)])]) = {
+  def toChange(myersResult: Option[(Int, List[(Coord, Op)])]) = {
 
     implicit val monoidLineRemoved = new Monoid[LinesRemoved] {
       override def empty: LinesRemoved = LinesRemoved.empty
@@ -250,7 +238,7 @@ object MyersExperimentation extends App {
     }
 
 
-    val ops: List[Op] = myersResult.map(_._2.map(_._3)).toList.flatten.reverse
+    val ops: List[Op] = myersResult.map(_._2.map(_._2)).toList.flatten.reverse
 
     ops
       .collect {
