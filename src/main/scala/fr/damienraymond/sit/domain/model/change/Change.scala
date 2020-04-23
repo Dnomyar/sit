@@ -21,7 +21,9 @@ object Change {
       case (fileAcc, change) =>
 
         val removeLines: IndexedList[String] => IndexedList[String] =
-          change.lineRemoved.lines.foldLeft(_)(_.delete(_))
+          change.lineRemoved.lines.zipWithIndex.foldLeft(_){
+            case (file, (idxToRemove, idx)) => file.delete(idxToRemove - idx)
+          }
 
         val addLines: IndexedList[String] => IndexedList[String] =
           change.lineAdded.lines.foldLeft(_) {
@@ -31,7 +33,5 @@ object Change {
         (removeLines andThen addLines) (fileAcc)
     }.asSortedMap
 
-
-  def diff(changes: List[Change]): String = ???
 
 }
