@@ -275,18 +275,34 @@ import scala.collection.immutable.SortedMap
 object MyersExperimentation {
 
 
+  type Coord = (Int, Int)
+
   def diff(original: SortedMap[Int, String], newVersion: SortedMap[Int, String]): Map[Int, Int] = {
 
     val `|original|` = original.size
     val `|newVersion|` = newVersion.size
 
+    val max = `|original|` + `|newVersion|`
 
-    def loopDepth(acc: Map[Int, Int], depth: Int): Map[Int, Int] =
-      (-depth to depth by 2)
-        .foldLeft(acc)(loopK(depth))
+    val expectedCoord = (`|original|`, `|newVersion|`)
+
+    @scala.annotation.tailrec
+    def loop(coord: Coord, acc: Map[Int, Int], depth: Int): Map[Int, Int] =
+      if(depth <= max && coord != expectedCoord) {
+        val (nCoord, nAcc) = loopDepth(coord, acc, depth, -depth)
+        loop(nCoord, nAcc, depth + 1)
+      } else acc
 
 
-    def loopK(depth: Int)(acc: Map[Int, Int], k: Int): Map[Int, Int] = {
+    @scala.annotation.tailrec
+    def loopDepth(coord: Coord, acc: Map[Int, Int], depth: Int, k: Int): (Coord, Map[Int, Int]) =
+      if(k <= depth && coord != expectedCoord) {
+        val (nCoord, nAcc) = loopK(depth)(acc, k)
+        loopDepth(nCoord, nAcc, depth, k + 2)
+      } else (coord, acc)
+
+
+    def loopK(depth: Int)(acc: Map[Int, Int], k: Int): (Coord, Map[Int, Int]) = {
 
       val x = {
         if (k == -depth || (k != depth && acc(k - 1) < acc(k + 1)))
@@ -298,7 +314,7 @@ object MyersExperimentation {
       val y = x - k
 
 
-      val (nx, ny) = loopDiagonal(acc)(x, y)
+      val coord @ (nx, ny) = loopDiagonal(acc)(x, y)
 
       val res = acc.updated(k, nx)
 
@@ -306,21 +322,20 @@ object MyersExperimentation {
         println(res)
       }
 
-      res
-
+      (coord, res)
 
     }
 
+    @scala.annotation.tailrec
     def loopDiagonal(acc: Map[Int, Int])(x: Int, y: Int): (Int, Int) =
       if(x < `|original|` && y < `|newVersion|` && original(x) == newVersion(y))
         loopDiagonal(acc)(x + 1, y + 1)
       else
         (x, y)
 
-    val max = `|original|` + `|newVersion|`
 
-    (0 to max)
-      .foldLeft(Map(1 -> 0))(loopDepth)
+
+    loop((0,0), Map(1 -> 0), 0)
   }
 
 
