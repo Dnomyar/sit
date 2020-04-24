@@ -353,12 +353,7 @@ object MyersExperimentation {
 
     def backtrack(history: List[(Depth, V)]): Trace = {
 
-      @scala.annotation.tailrec
-      def loopDiagonal(trace: Trace)(x: Int, y: Int): Trace =
-        if (x > expectedCoord._1 && y > expectedCoord._2)
-          loopDiagonal((x - 1, y - 1) :: trace)(x - 1, y - 1)
-        else
-          trace
+
 
 
       @scala.annotation.tailrec
@@ -377,6 +372,12 @@ object MyersExperimentation {
           val prevX = acc(prevK)
           val prevY = prevX - prevK
 
+          @scala.annotation.tailrec
+          def loopDiagonal(trace: Trace)(x: Int, y: Int): Trace =
+            if (x > prevX && y > prevY)
+              loopDiagonal((x - 1, y - 1) :: trace)(x - 1, y - 1)
+            else
+              trace
 
           val nTrace = loopDiagonal(trace)(x, y)
 
