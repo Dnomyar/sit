@@ -4,7 +4,15 @@ import fr.damienraymond.sit.domain.model.change.datastructure.IndexedList
 
 import scala.collection.immutable.SortedMap
 
-case class Change(lineRemoved: LinesRemoved, lineAdded: LinesAdded)
+case class Change(linesRemoved: LinesRemoved, linesAdded: LinesAdded) {
+
+  def withNewLineRemoved(lineRemoved: Int): Change =
+    copy(linesRemoved = linesRemoved.withNewLineRemoved(lineRemoved))
+
+  def withNewLineAdded(idx: Int, line: String): Change =
+    copy(linesAdded = linesAdded.withNewLineAdded(idx, line))
+
+}
 
 object Change {
 
@@ -21,12 +29,12 @@ object Change {
       case (fileAcc, change) =>
 
         val removeLines: IndexedList[String] => IndexedList[String] =
-          change.lineRemoved.lines.zipWithIndex.foldLeft(_){
+          change.linesRemoved.lines.zipWithIndex.foldLeft(_){
             case (file, (idxToRemove, idx)) => file.delete(idxToRemove - idx)
           }
 
         val addLines: IndexedList[String] => IndexedList[String] =
-          change.lineAdded.lines.foldLeft(_) {
+          change.linesAdded.lines.foldLeft(_) {
             case (file, (lineNumber, line)) => file.insertAt(lineNumber, line)
           }
 

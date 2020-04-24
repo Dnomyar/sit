@@ -31,6 +31,8 @@ case class LinesRemoved(lines: SortedSet[Int]) {
     groupByConsecutiveValues(lines.toList, SortedSet.empty, List.empty)
   }
 
+  def withNewLineRemoved(lineRemoved: Int): LinesRemoved = LinesRemoved(lines + lineRemoved)
+
 }
 
 object LinesRemoved {

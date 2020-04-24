@@ -15,7 +15,7 @@ class MyersExperimentationSpec extends Properties("MyersExperimentation") {
   }
 
   def applyMyers(`vn`: SortedMap[Int, String], `vn+1`: SortedMap[Int, String]): Change = {
-    MyersExperimentation.toChange(MyersExperimentation.myers(`vn`, `vn+1`))
+    MyersExperimentation.change(`vn`, `vn+1`)
   }
 
 
