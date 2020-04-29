@@ -28,11 +28,4 @@ class ChangePropertySpec extends Properties("Change") {
 
   }
 
-//  property("applyChange(Change(LinesRemoved(TreeSet(0, 2, 3, 4, 5)),LinesAdded(TreeMap())), TreeMap(0 -> , 1 -> , 2 -> , 3 -> , 4 -> :, 5 -> )) == \"\"") = {
-//    Change.applyChanges(
-//      List(Change(LinesRemoved(0, 2, 3, 4, 5), LinesAdded.empty)),
-//      IndexedList.fromList(List("", "", "", "", ":", ""))
-//    ).asSortedMap == SortedMap.from(List(0 -> ""))
-//  }
-
 }
