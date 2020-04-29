@@ -70,11 +70,6 @@ object MyersExperimentation {
       loop((0, 0), Map(1 -> 0), SortedMap.empty, 0)
     }
 
-    val history = diff
-
-
-    val maxDepth = history.keys.max
-
 
     type Trace = List[Coord]
 
@@ -132,15 +127,16 @@ object MyersExperimentation {
         (x1 == x2) && (y1 < y2)
       }
 
-      backtrack.zip(backtrack.tail).foldLeft(Change.empty){
+      backtrack.zip(backtrack.drop(1)).foldLeft(Change.empty){
         case (change, v @ ((x, _), _)) if isLeftMove(v) => change.withNewLineRemoved(x)
         case (change, v @ ((_, y), _)) if isDownMove(v) => change.withNewLineAdded(y, newVersion(y))
         case (change, _) => change
       }
     }
 
-
-    backtrackToChange(backtrack(diff.toList.reverse))
+//    if(original.isEmpty && newVersion.isEmpty) Change.empty
+//    else
+      backtrackToChange(backtrack(diff.toList.reverse))
 
   }
 
