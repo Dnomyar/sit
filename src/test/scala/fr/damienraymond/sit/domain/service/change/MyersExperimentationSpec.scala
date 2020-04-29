@@ -1,7 +1,7 @@
 package fr.damienraymond.sit.domain.service.change
 
 import fr.damienraymond.sit.domain.model.change.{Change, LinesAdded}
-import org.scalacheck.{Arbitrary, Gen, Prop, Properties}
+import org.scalacheck.{Arbitrary, Prop, Properties}
 
 import scala.collection.immutable.SortedMap
 
