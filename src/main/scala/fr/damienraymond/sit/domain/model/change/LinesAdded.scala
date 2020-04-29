@@ -2,7 +2,13 @@ package fr.damienraymond.sit.domain.model.change
 
 import scala.collection.immutable.SortedMap
 
-case class LinesAdded(lines: SortedMap[Int, String])
+case class LinesAdded(lines: SortedMap[Int, String]) {
+
+  def withNewLineAdded(idx: Int, line: String): LinesAdded =
+    LinesAdded(lines + (idx -> line))
+
+
+}
 
 object LinesAdded {
 

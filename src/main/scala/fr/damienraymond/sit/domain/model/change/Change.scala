@@ -2,9 +2,15 @@ package fr.damienraymond.sit.domain.model.change
 
 import fr.damienraymond.sit.domain.model.change.datastructure.IndexedList
 
-import scala.collection.immutable.SortedMap
+case class Change(linesRemoved: LinesRemoved, linesAdded: LinesAdded) {
 
-case class Change(lineRemoved: LinesRemoved, lineAdded: LinesAdded)
+  def withNewLineRemoved(lineRemoved: Int): Change =
+    copy(linesRemoved = linesRemoved.withNewLineRemoved(lineRemoved))
+
+  def withNewLineAdded(idx: Int, line: String): Change =
+    copy(linesAdded = linesAdded.withNewLineAdded(idx, line))
+
+}
 
 object Change {
 
@@ -13,22 +19,25 @@ object Change {
   def fromLineAdded(lineAdded: LinesAdded): Change =
     Change(LinesRemoved.empty, lineAdded)
 
-  def applyChanges(changes: List[Change]): SortedMap[Int, String] =
-    changes.foldLeft(IndexedList.empty[String]) {
+  def fromLineRemoved(linesRemoved: LinesRemoved): Change =
+    Change(linesRemoved, LinesAdded.empty)
+
+  def applyChanges(changes: List[Change], zero: IndexedList[String] = IndexedList.empty[String]): IndexedList[String] =
+    changes.foldLeft(zero) {
       case (fileAcc, change) =>
 
         val removeLines: IndexedList[String] => IndexedList[String] =
-          change.lineRemoved.lines.foldLeft(_)(_.delete(_))
+          change.linesRemoved.lines.toList.zipWithIndex.foldLeft(_){
+            case (file, (idxToRemove, idx)) => file.delete(idxToRemove - idx)
+          }
 
         val addLines: IndexedList[String] => IndexedList[String] =
-          change.lineAdded.lines.foldLeft(_) {
+          change.linesAdded.lines.foldLeft(_) {
             case (file, (lineNumber, line)) => file.insertAt(lineNumber, line)
           }
 
         (removeLines andThen addLines) (fileAcc)
-    }.asSortedMap
+    }
 
-
-  def diff(changes: List[Change]): String = ???
 
 }

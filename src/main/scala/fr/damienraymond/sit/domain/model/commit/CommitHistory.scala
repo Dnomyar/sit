@@ -33,7 +33,7 @@ object CommitHistory {
   def applyCommits(commits: CommitHistory): Set[File] = {
     commits.groupChangesByFile
       .view
-      .mapValues(Change.applyChanges)
+      .mapValues((Change.applyChanges(_: List[Change])) andThen (_.asSortedMap))
       .map {
         case (filename, content) => file.File(filename, content)
       }
