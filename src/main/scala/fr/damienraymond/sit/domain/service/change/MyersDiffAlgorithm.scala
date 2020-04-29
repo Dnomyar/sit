@@ -5,7 +5,7 @@ import fr.damienraymond.sit.domain.model.change.Change
 import scala.collection.immutable.SortedMap
 
 
-object MyersExperimentation {
+object MyersDiffAlgorithm extends DiffService {
 
 
   type Coordinates = (Int, Int)
@@ -17,6 +17,13 @@ object MyersExperimentation {
   type History = SortedMap[Depth, V]
 
   type Trace = List[Coordinates]
+
+
+  override def identifyChanges(initial: Iterable[String], newVersion: Iterable[String]): Change =
+    change(
+      SortedMap.from(LazyList.from(0).zip(initial)),
+      SortedMap.from(LazyList.from(0).zip(newVersion)),
+    )
 
   def change(original: SortedMap[Int, String], newVersion: SortedMap[Int, String]): Change = {
 

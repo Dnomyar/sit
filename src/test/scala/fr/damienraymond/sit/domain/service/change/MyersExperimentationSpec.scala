@@ -17,7 +17,7 @@ class MyersExperimentationSpec extends Properties("MyersExperimentation") {
     )
 
     Prop.forAll { (`vn`: SortedMap[Int, String], `vn+1`: SortedMap[Int, String]) =>
-      val change: Change = MyersExperimentation.change(`vn`, `vn+1`)
+      val change: Change = MyersDiffAlgorithm.change(`vn`, `vn+1`)
 
       val initialChange = Change.fromLineAdded(LinesAdded(`vn`))
 
