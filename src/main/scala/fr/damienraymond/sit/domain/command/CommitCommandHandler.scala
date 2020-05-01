@@ -1,30 +1,30 @@
 package fr.damienraymond.sit.domain.command
 
+import fr.damienraymond.ddd.{CommandHandler, Event}
 import fr.damienraymond.sit.domain.command.CommitCommandHandlerError.CurrentBranchNotFound
 import fr.damienraymond.sit.domain.event.CommitCreated
 import fr.damienraymond.sit.domain.model.branch.Branch
 import fr.damienraymond.sit.domain.model.commit.{AbstractCommit, CommitHistory}
+import fr.damienraymond.sit.domain.repository
 import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository}
 import fr.damienraymond.sit.domain.service.change.IdentifyChangesService
-import fr.damienraymond.sit.domain.{event, repository}
-import zio.ZIO
+import zio.{IO, ZIO}
 
 class CommitCommandHandler(currentBranchRepository: CurrentBranchRepository,
                            commitRepository: CommitRepository,
-                           identifyChangesService: IdentifyChangesService) extends CommandHandler[CommitRepository with CurrentBranchRepository, CommitCommand, Any] {
+                           identifyChangesService: IdentifyChangesService) extends CommandHandler[CommitCommand, Any] {
 
-  override def handle(command: CommitCommand): ZIO[CommitRepository with CurrentBranchRepository, Any, Set[event.Event]] =
-    for {
-      currentBranch <- getCurrentBranch
-      commitHistory <- commitRepository.getCommitsHistory(currentBranch.name)
-      files = CommitHistory.applyCommits(commitHistory)
-      filesChanges <- identifyChangesService.identify(files)
-      newCommit = commitHistory.newCommit(filesChanges)
-      _ <- saveCommit(newCommit)
-    } yield Set(CommitCreated(newCommit))
+  override def handle(command: CommitCommand): IO[Any, Set[Event]] =
+      for {
+        currentBranch <- getCurrentBranch
+        commitHistory <- commitRepository.getCommitsHistory(currentBranch.name)
+        files = CommitHistory.applyCommits(commitHistory)
+        filesChanges <- identifyChangesService.identify(files)
+        newCommit = commitHistory.newCommit(filesChanges)
+        _ <- saveCommit(newCommit)
+      } yield Set(CommitCreated(newCommit))
 
-
-  val getCurrentBranch: ZIO[CurrentBranchRepository, Object, Branch] =
+  val getCurrentBranch: IO[Object, Branch] =
     currentBranchRepository
       .get
       .flatMap {
@@ -33,7 +33,7 @@ class CommitCommandHandler(currentBranchRepository: CurrentBranchRepository,
       }
 
 
-  def saveCommit(commit: AbstractCommit): ZIO[CommitRepository, repository.RepositoryError, Unit] =
+  def saveCommit(commit: AbstractCommit): IO[repository.RepositoryError, Unit] =
     commitRepository.save(commit.hash, commit)
 
 }

@@ -65,7 +65,7 @@ object MyersDiffAlgorithm extends DiffService {
     def loopK(depth: Int)(acc: V, k: K): (Coordinates, V) = {
 
       val x = {
-        if (k == -depth || (k != depth && acc(k - 1) < acc(k + 1)))
+        if (shouldGoDown(depth, acc, k))
           acc(k + 1)
         else
           acc(k - 1) + 1
@@ -99,7 +99,7 @@ object MyersDiffAlgorithm extends DiffService {
         val k = x - y
 
         val prevK =
-          if (k == -depth || (k != depth && acc(k - 1) < acc(k + 1))) {
+          if (shouldGoDown(depth, acc, k)) {
             k + 1
           } else {
             k - 1
@@ -146,5 +146,8 @@ object MyersDiffAlgorithm extends DiffService {
       case (change, _) => change
     }
   }
+
+  private def shouldGoDown(depth: Depth, acc: V, k: K): Boolean =
+    k == -depth || (k != depth && acc(k - 1) < acc(k + 1))
 
 }

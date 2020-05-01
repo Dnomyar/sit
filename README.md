@@ -70,7 +70,7 @@ val output = List(SortedSet(1,2,3), SortedSet(10,11,12), SortedSet(60))
 [Here is the test](https://github.com/Dnomyar/sit/blob/fb2bd7ab28b82cede5fa49540370ee718e65afd0/src/test/scala/fr/damienraymond/sit/domain/model/change/LinesRemovedSpec.scala#L13-L32)
  
    
-### 5# Implementing Myers diff algorithm (algorithm)
+### 5# Implementing Myers diff algorithm  (algorithm)
 
  
 ## Data-structures
