@@ -21,7 +21,11 @@ case class CommitHistory private(commits: List[AbstractCommit]) {
   }
 
 
-  def newCommit(filesChanges: Set[FileChanged]): AbstractCommit = ???
+  def newCommit(filesChanges: Set[FileChanged]): AbstractCommit =
+    commits match {
+      case latestCommit :: _ => Commit(latestCommit.hash, filesChanges)
+      case Nil => OrphanCommit(filesChanges)
+    }
 
 }
 
