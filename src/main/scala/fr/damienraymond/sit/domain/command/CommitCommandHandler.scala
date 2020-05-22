@@ -12,7 +12,8 @@ import zio.{IO, ZIO}
 
 class CommitCommandHandler(currentBranchRepository: CurrentBranchRepository,
                            commitRepository: CommitRepository,
-                           identifyChangesService: IdentifyChangesService) extends CommandHandler[CommitCommand, Any] {
+                           identifyChangesService: IdentifyChangesService) extends CommandHandler[CommitCommand] {
+
 
   override def handle(command: CommitCommand): IO[Any, Set[Event]] =
       for {
