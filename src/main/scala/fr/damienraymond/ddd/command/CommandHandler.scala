@@ -1,5 +1,6 @@
-package fr.damienraymond.ddd
+package fr.damienraymond.ddd.command
 
+import fr.damienraymond.ddd.Event
 import zio.ZIO
 import zio.console.Console
 

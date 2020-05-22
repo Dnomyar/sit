@@ -1,6 +1,6 @@
 package fr.damienraymond.sit
 
-import fr.damienraymond.ddd.CommandBus
+import fr.damienraymond.ddd.command.CommandBus
 import fr.damienraymond.sit.domain.command.CommitCommand
 import zio.console._
 import zio.{URIO, ZIO}

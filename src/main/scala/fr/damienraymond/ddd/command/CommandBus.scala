@@ -1,8 +1,8 @@
-package fr.damienraymond.ddd
+package fr.damienraymond.ddd.command
 
+import fr.damienraymond.ddd.Event
 import zio.ZIO
-import zio.console._
-
+import zio.console.{Console, putStrLn}
 
 object CommandBus {
 

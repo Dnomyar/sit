@@ -1,6 +1,6 @@
 package fr.damienraymond.sit.domain.command
 
-import fr.damienraymond.ddd.CommandHandler
+import fr.damienraymond.ddd.command.CommandHandler
 import fr.damienraymond.sit.domain.command.CommitCommandHandlerError.CurrentBranchNotFound
 import fr.damienraymond.sit.domain.event.CommitCreated
 import fr.damienraymond.sit.domain.model.branch.Branch
