@@ -10,7 +10,7 @@ class IdentifyUpdatedFile(fileLastUpdateRepository: FileLastUpdateRepository, ge
     for {
       lastKnownUpdate <- getLastKnownUpdate(filename)
       actualLastFile <- getFileLastUpdate.getFileLastUpdate(filename)
-    } yield lastKnownUpdate == actualLastFile
+    } yield lastKnownUpdate != actualLastFile
   }
 
   private def getLastKnownUpdate(filename: Filename): ZIO[Any, Exception, FileUpdatedDate] =
