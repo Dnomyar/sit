@@ -35,7 +35,7 @@ object Instantiation {
       testTxt = Filename("test.txt")
       _ <- commitRepository.save(CommitHash("hash1"), OrphanCommit(Set(
         FileChanged(testTxt, change.Change.fromLineAdded(LinesAdded(
-          0 -> "hello",
+          0 -> "Hello",
           1 -> "world"
         )))
       )))
@@ -49,7 +49,7 @@ object Instantiation {
 
       getFileLastUpdate: GetFileLastUpdate = new GetFileLastUpdateImplementation
       readFileService: ReadFileService = ReadFileServiceImplementation
-      diffService: DiffService = DummyDiffService
+      diffService: DiffService = MyersDiffAlgorithm
 
       identifyUpdatedFile: IdentifyUpdatedFile = new IdentifyUpdatedFile(fileLastUpdateRepository, getFileLastUpdate)
       identifyChangesService: IdentifyChangesService = new IdentifyChangesService(

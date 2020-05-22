@@ -19,15 +19,14 @@ class CommitCommandHandler(currentBranchRepository: CurrentBranchRepository,
   override def handle(command: CommitCommand) =
       for {
         currentBranch <- getCurrentBranch
-        _ <- putStrLn(s"currentBranch = $currentBranch")
+        _ <- putStrLn(s"[CommitCommandHandler] currentBranch = $currentBranch")
         commitHistory <- commitRepository.getCommitsHistory(currentBranch)
-        _ <- putStrLn(s"commitHistory = $commitHistory")
+        _ <- putStrLn(s"[CommitCommandHandler] commitHistory = $commitHistory")
         files = CommitHistory.applyCommits(commitHistory)
-        _ <- putStrLn(s"files = $files")
+        _ <- putStrLn(s"[CommitCommandHandler] files = $files")
         filesChanges <- identifyChangesService.identify(files)
-        _ <- putStrLn(s"filesChanges = $filesChanges")
+        _ <- putStrLn(s"[CommitCommandHandler] filesChanges = $filesChanges")
         newCommit = commitHistory.newCommit(filesChanges)
-        _ <- putStrLn(s"newCommit = $newCommit")
         _ <- saveCommit(newCommit)
       } yield Set(CommitCreated(newCommit))
 
