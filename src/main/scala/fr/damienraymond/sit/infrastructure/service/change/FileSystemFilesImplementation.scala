@@ -16,7 +16,7 @@ object FileSystemFilesImplementation extends FileSystemFiles {
   override def allFiles: IO[Exception, Set[FilePath]] = {
 
     @scala.annotation.tailrec
-    def loop(directoriesToExplore: Set[File], files: Set[File]): Set[File] = {
+    def exploreDirectories(directoriesToExplore: Set[File], files: Set[File]): Set[File] = {
       if (directoriesToExplore.isEmpty) files
       else {
         val (newDirectoriesToExplore, newFiles) =
@@ -25,11 +25,11 @@ object FileSystemFilesImplementation extends FileSystemFiles {
             .flatMap(_.listFiles.toSet)
             .partition(_.isDirectory)
 
-        loop(newDirectoriesToExplore, files ++ newFiles)
+        exploreDirectories(newDirectoriesToExplore, files ++ newFiles)
       }
     }
 
-    IO(loop(Set(new File(".")), Set.empty))
+    IO(exploreDirectories(Set(new File(".")), Set.empty))
       .flatMap(IO.foreach(_)(f => IO(f.getPath)))
       .map(_.filterNot(shouldIgnore))
       .map(_.map(FilePath(_)).toSet)
