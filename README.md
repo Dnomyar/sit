@@ -70,9 +70,11 @@ val output = List(SortedSet(1,2,3), SortedSet(10,11,12), SortedSet(60))
 [Here is the test](https://github.com/Dnomyar/sit/blob/fb2bd7ab28b82cede5fa49540370ee718e65afd0/src/test/scala/fr/damienraymond/sit/domain/model/change/LinesRemovedSpec.scala#L13-L32)
  
    
-### 5# Implementing Myers diff algorithm  (algorithm)
+### 5# Git Status Query 1/2 (tail recursion, collections, breadth-first search)
+We implemented the function to scan the file system. 
 
- 
+[Here is the code](https://github.com/Dnomyar/sit/blob/591c5249569e387b9ee97d087bb58bee5f971676/src/main/scala/fr/damienraymond/sit/infrastructure/service/change/FileSystemFilesImplementation.scala#L16-L38)
+
 ## Data-structures
 
 ### `IndexedList[T]`

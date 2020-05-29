@@ -10,6 +10,7 @@ object FileSystemFilesImplementation extends FileSystemFiles {
 
   private val toIgnore = Set(".git/", "/target", ".idea/", ".bloop/")
 
+  // Todo not the responsibility of that
   private def shouldIgnore(path: String): Boolean =
     toIgnore.exists(exclusion => path.contains(exclusion))
 
