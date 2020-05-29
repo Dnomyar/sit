@@ -1,5 +1,5 @@
 package fr.damienraymond.sit.domain.repository
 
-import fr.damienraymond.sit.domain.model.file.{FileUpdatedDate, Filename}
+import fr.damienraymond.sit.domain.model.file.{FilePath, FileUpdatedDate}
 
-trait FileLastUpdateRepository extends Repository[Filename, FileUpdatedDate]
+trait FileLastUpdateRepository extends Repository[FilePath, FileUpdatedDate]

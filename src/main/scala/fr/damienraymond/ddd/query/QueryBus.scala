@@ -5,7 +5,7 @@ import zio.console._
 
 object QueryBus {
 
-  def dispatch[T, C <: Query[T]](message: C)(implicit CM: QueryHandler[T, C]): ZIO[Console, Any, T] =
+  def dispatch[C <: Query](message: C)(implicit CM: QueryHandler[C]): ZIO[Console, Any, C#RETURN_TYPE] =
     putStrLn("[QueryBus] Dispatching command") *>
       CM.handle(message)
 

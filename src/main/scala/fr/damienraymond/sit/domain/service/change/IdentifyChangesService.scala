@@ -1,7 +1,7 @@
 package fr.damienraymond.sit.domain.service.change
 
-import fr.damienraymond.sit.domain.model.FileChanged
-import fr.damienraymond.sit.domain.model.file.{File, Filename, TrackedFiles}
+import fr.damienraymond.sit.domain.model.file
+import fr.damienraymond.sit.domain.model.file.{File, FileChanged, FilePath, FileStatus, TrackedFiles}
 import fr.damienraymond.sit.domain.repository
 import fr.damienraymond.sit.domain.repository.TrackedFilesRepository
 import zio.ZIO
@@ -10,9 +10,23 @@ import zio.stream._
 class IdentifyChangesService(trackedFilesRepository: TrackedFilesRepository,
                              identifyUpdatedFile: IdentifyUpdatedFile,
                              readFileService: ReadFileService,
+                             fileSystemFiles: FileSystemFiles,
                              diffService: DiffService) {
 
-  def identify(state: Set[File]): ZIO[Any, Exception, Set[FileChanged]] =
+
+  def identifyUpdatedFiles: ZIO[Any, Exception, Map[FilePath, FileStatus]] = {
+    (trackedFilesRepository.get <*> fileSystemFiles.allFiles).flatMap{
+      case (maybeTrackedFiles, files) =>
+        ZIO.foreachPar(maybeTrackedFiles.map(_.files).getOrElse(Set.empty) ++ files){
+          file =>
+            for {
+              fileStatus <- identifyUpdatedFile.identifyFileStatus(file)
+            } yield (file, fileStatus)
+        }.map(_.toMap)
+    }
+  }
+
+  def identifyChanges(state: Set[File]): ZIO[Any, Exception, Set[FileChanged]] =
     Stream
       .fromEffect(getTrackedFiles)
       .flatMap(trackedFiled => Stream.fromIterable(trackedFiled.files))
@@ -23,7 +37,7 @@ class IdentifyChangesService(trackedFilesRepository: TrackedFilesRepository,
   private def getTrackedFiles: ZIO[Any, repository.RepositoryError, TrackedFiles] =
     trackedFilesRepository.get.map(_.getOrElse(TrackedFiles.empty))
 
-  private def identifyChange(state: Set[File])(filename: Filename): ZIO[Any, Exception, FileChanged] =
+  private def identifyChange(state: Set[File])(filename: FilePath): ZIO[Any, Exception, FileChanged] =
     readFileService
       .readFile(filename)
       .map { newVersionFileContent =>
@@ -35,7 +49,7 @@ class IdentifyChangesService(trackedFilesRepository: TrackedFilesRepository,
 
         diffService.identifyChanges(lastKnownFileContent, newVersionFileContent)
       }
-      .map(FileChanged(filename, _))
+      .map(file.FileChanged(filename, _))
 
 
 }

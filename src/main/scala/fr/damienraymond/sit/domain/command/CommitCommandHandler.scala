@@ -24,7 +24,7 @@ class CommitCommandHandler(currentBranchRepository: CurrentBranchRepository,
         _ <- putStrLn(s"[CommitCommandHandler] commitHistory = $commitHistory")
         files = CommitHistory.applyCommits(commitHistory)
         _ <- putStrLn(s"[CommitCommandHandler] files = $files")
-        filesChanges <- identifyChangesService.identify(files)
+        filesChanges <- identifyChangesService.identifyChanges(files)
         _ <- putStrLn(s"[CommitCommandHandler] filesChanges = $filesChanges")
         newCommit = commitHistory.newCommit(filesChanges)
         _ <- saveCommit(newCommit)

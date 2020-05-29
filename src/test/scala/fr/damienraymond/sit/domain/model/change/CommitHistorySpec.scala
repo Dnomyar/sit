@@ -1,9 +1,9 @@
 package fr.damienraymond.sit.domain.model.change
 
 import fr.damienraymond.sit.domain.model
-import fr.damienraymond.sit.domain.model.FileChanged
 import fr.damienraymond.sit.domain.model.commit.{Commit, CommitHistory, OrphanCommit}
-import fr.damienraymond.sit.domain.model.file.Filename
+import fr.damienraymond.sit.domain.model.file
+import fr.damienraymond.sit.domain.model.file.{FileChanged, FilePath}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -13,19 +13,19 @@ class CommitHistorySpec extends AnyFlatSpec with Matchers {
 
   it should "allow to get the changes grouped by file" in {
 
-    val file1 = Filename("fineName1")
-    val file2 = Filename("fineName2")
+    val file1 = FilePath("fineName1")
+    val file2 = FilePath("fineName2")
 
     val commit1File1Change = Change.fromLineAdded(LinesAdded(0 -> "hello", 1 -> "world"))
 
-    val commit1 = OrphanCommit(Set(FileChanged(file1, commit1File1Change)))
+    val commit1 = OrphanCommit(Set(file.FileChanged(file1, commit1File1Change)))
 
     val commit2File1Change = Change(LinesRemoved(1), LinesAdded(1 -> "Damien"))
     val commit2File2Change = Change.fromLineAdded(LinesAdded(0 -> "bonjour"))
 
     val commit2 = Commit(commit1.hash, Set(
-      model.FileChanged(file1, commit2File1Change),
-      model.FileChanged(file2, commit2File2Change)
+      file.FileChanged(file1, commit2File1Change),
+      file.FileChanged(file2, commit2File2Change)
     ))
 
 

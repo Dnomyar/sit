@@ -6,16 +6,18 @@ import fr.damienraymond.sit.domain.command.CommitCommandHandler
 import fr.damienraymond.sit.domain.model.branch.BranchName
 import fr.damienraymond.sit.domain.model.change.LinesAdded
 import fr.damienraymond.sit.domain.model.commit.{CommitHash, OrphanCommit}
-import fr.damienraymond.sit.domain.model.file.{FileUpdatedDate, Filename, TrackedFiles}
-import fr.damienraymond.sit.domain.model.{FileChanged, branch, change}
+import fr.damienraymond.sit.domain.model.file.{FileChanged, FilePath, FileUpdatedDate, TrackedFiles}
+import fr.damienraymond.sit.domain.model.{branch, change}
+import fr.damienraymond.sit.domain.query.StatusQueryHandler
 import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository, FileLastUpdateRepository, TrackedFilesRepository}
 import fr.damienraymond.sit.domain.service.change.{IdentifyUpdatedFile, _}
 import fr.damienraymond.sit.infrastructure.repository.{InMemoryCommitRepository, InMemoryCurrentBranchRepository, InMemoryFileLastUpdateRepository, InMemoryTrackedFilesRepository}
-import fr.damienraymond.sit.infrastructure.service.change.{GetFileLastUpdateImplementation, ReadFileServiceImplementation}
+import fr.damienraymond.sit.infrastructure.service.change.{FileSystemFilesImplementation, GetFileLastUpdateImplementation, ReadFileServiceImplementation}
 
 
 trait Instantiated {
   implicit val commitCommandHandler: CommitCommandHandler
+  implicit val statusQueryHandler: StatusQueryHandler
 }
 
 
@@ -32,7 +34,7 @@ object Instantiation {
 
       commitRepository: CommitRepository <- InMemoryCommitRepository.create
 
-      testTxt = Filename("test.txt")
+      testTxt = FilePath("test.txt")
       _ <- commitRepository.save(CommitHash("hash1"), OrphanCommit(Set(
         FileChanged(testTxt, change.Change.fromLineAdded(LinesAdded(
           0 -> "Hello",
@@ -51,11 +53,14 @@ object Instantiation {
       readFileService: ReadFileService = ReadFileServiceImplementation
       diffService: DiffService = MyersDiffAlgorithm
 
+      fileSystemFiles: FileSystemFiles = FileSystemFilesImplementation
+
       identifyUpdatedFile: IdentifyUpdatedFile = new IdentifyUpdatedFile(fileLastUpdateRepository, getFileLastUpdate)
       identifyChangesService: IdentifyChangesService = new IdentifyChangesService(
         trackedFilesRepository,
         identifyUpdatedFile,
         readFileService,
+        fileSystemFiles,
         diffService
       )
 
@@ -66,6 +71,7 @@ object Instantiation {
         commitRepository,
         identifyChangesService
       )
+      override implicit val statusQueryHandler: StatusQueryHandler = new StatusQueryHandler(identifyChangesService)
     }
   }
 

@@ -1,23 +1,23 @@
 package fr.damienraymond.sit.domain.model.commit
 
 import fr.damienraymond.sit.domain.model.change.Change
-import fr.damienraymond.sit.domain.model.file.{File, Filename}
-import fr.damienraymond.sit.domain.model.{FileChanged, file}
+import fr.damienraymond.sit.domain.model.file.{File, FileChanged, FilePath}
+import fr.damienraymond.sit.domain.model.file
 
 case class CommitHistory private(commits: List[AbstractCommit]) {
 
-  lazy val groupChangesByFile: Map[Filename, List[Change]] = {
+  lazy val groupChangesByFile: Map[FilePath, List[Change]] = {
 
-    val accumulateByFile: (Map[Filename, List[Change]], FileChanged) => Map[Filename, List[Change]] = {
+    val accumulateByFile: (Map[FilePath, List[Change]], FileChanged) => Map[FilePath, List[Change]] = {
       case (acc, FileChanged(filename, change)) =>
         val updatedChanges = acc.get(filename).map(_ :+ change).getOrElse(List(change))
         acc.updated(filename, updatedChanges)
     }
 
-    val accumulateChangesByCommit = (acc: Map[Filename, List[Change]], commit: AbstractCommit) =>
+    val accumulateChangesByCommit = (acc: Map[FilePath, List[Change]], commit: AbstractCommit) =>
       commit.changes.foldLeft(acc)(accumulateByFile)
 
-    commits.foldLeft(Map.empty[Filename, List[Change]])(accumulateChangesByCommit)
+    commits.foldLeft(Map.empty[FilePath, List[Change]])(accumulateChangesByCommit)
   }
 
 

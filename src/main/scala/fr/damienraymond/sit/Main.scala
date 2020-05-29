@@ -1,7 +1,9 @@
 package fr.damienraymond.sit
 
 import fr.damienraymond.ddd.command.CommandBus
+import fr.damienraymond.ddd.query.QueryBus
 import fr.damienraymond.sit.domain.command.CommitCommand
+import fr.damienraymond.sit.domain.query.StatusQuery
 import zio.console._
 import zio.{URIO, ZIO}
 
@@ -26,6 +28,15 @@ object Main extends zio.App {
     args match {
       case "commit" :: Nil =>
         CommandBus.dispatch(CommitCommand()).unit
+
+      case "status" :: Nil =>
+        for {
+          fileStatus <- QueryBus.dispatch(StatusQuery())
+          _ <- putStrLn("File status")
+          _ <- putStrLn(fileStatus.fileUpdated.toList.sortBy(_._1.path).map{
+            case (file, status) => s"${file.path} $status"
+          }.mkString("\n"))
+        } yield ()
 
       case unhandledCommand =>
         ZIO.fail(s"Command not handled $unhandledCommand")
