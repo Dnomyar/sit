@@ -17,14 +17,13 @@ class IdentifyChangesService(stagedFileRepository: StagedFilesRepository,
 
   def identifyUpdatedFiles: ZIO[Any, Exception, Map[FilePath, FileStatus]] = {
     (trackedFilesRepository.get <*> stagedFileRepository.get <*> fileSystemFiles.allFiles).flatMap {
-      case ((maybeTrackedFiles, maybeStagedFiles), files) =>
+      case ((maybeTrackedFiles, maybeStagedFiles), scannedFiles) =>
         val trackedFiles = maybeTrackedFiles.getOrElse(TrackedFiles.empty)
         val stagedFiles = maybeStagedFiles.getOrElse(StagedFiles.empty)
 
-        val notTrackedFiles = files.diff(trackedFiles.files)
+        val notTrackedFiles = scannedFiles.diff(trackedFiles.files)
 
-
-        val allFiles = trackedFiles.files ++ files
+        val allFiles = trackedFiles.files ++ scannedFiles
 
         for {
           allFilesStatus <- ZIO.foreachPar(allFiles) {
@@ -32,7 +31,7 @@ class IdentifyChangesService(stagedFileRepository: StagedFilesRepository,
               for {
                 fileStatus <- identifyUpdatedFile.identifyFileStatus(file)
               } yield (file, fileStatus)
-          }.map(_.toMap)
+          }
 
           deletedFiles = allFilesStatus.collect { case (file, FileChangedStatus.Deleted) => file }.toSet
           addedFiles = allFilesStatus.collect { case (file, FileChangedStatus.Added) => file }.toSet
@@ -60,14 +59,14 @@ class IdentifyChangesService(stagedFileRepository: StagedFilesRepository,
 
   def identifyChanges(state: Set[File]): ZIO[Any, Exception, Set[FileChanged]] =
     Stream
-      .fromEffect(getTrackedFiles)
+      .fromEffect(getStagedFiles)
       .flatMap(trackedFiled => Stream.fromIterable(trackedFiled.files))
       .filterM(identifyUpdatedFile.identifyUpdatedFile)
       .mapM(identifyChange(state))
       .run(Sink.collectAllToSet[FileChanged])
 
-  private def getTrackedFiles: ZIO[Any, repository.RepositoryError, TrackedFiles] =
-    trackedFilesRepository.get.map(_.getOrElse(TrackedFiles.empty))
+  private def getStagedFiles: ZIO[Any, repository.RepositoryError, StagedFiles] =
+    stagedFileRepository.get.map(_.getOrElse(StagedFiles.empty))
 
   private def identifyChange(state: Set[File])(filename: FilePath): ZIO[Any, Exception, FileChanged] =
     readFileService

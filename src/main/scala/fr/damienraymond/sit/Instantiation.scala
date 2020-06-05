@@ -2,7 +2,7 @@ package fr.damienraymond.sit
 
 import java.time.ZonedDateTime
 
-import fr.damienraymond.sit.domain.command.CommitCommandHandler
+import fr.damienraymond.sit.domain.command.{AddCommandHandler, CommitCommandHandler}
 import fr.damienraymond.sit.domain.model.branch.BranchName
 import fr.damienraymond.sit.domain.model.change.LinesAdded
 import fr.damienraymond.sit.domain.model.commit.{CommitHash, OrphanCommit}
@@ -16,6 +16,7 @@ import fr.damienraymond.sit.infrastructure.service.change.{FileSystemFilesImplem
 
 
 trait Instantiated {
+  implicit val addCommandHandler: AddCommandHandler
   implicit val commitCommandHandler: CommitCommandHandler
   implicit val statusQueryHandler: StatusQueryHandler
 }
@@ -73,6 +74,9 @@ object Instantiation {
 
 
     } yield new Instantiated {
+
+      override implicit val addCommandHandler: AddCommandHandler = new AddCommandHandler(stagedFileRepository)
+
       override implicit val commitCommandHandler: CommitCommandHandler = new CommitCommandHandler(
         currentBranchRepository,
         commitRepository,
