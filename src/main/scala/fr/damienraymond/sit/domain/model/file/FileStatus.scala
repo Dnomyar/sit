@@ -4,9 +4,12 @@ sealed trait FileStatus
 
 object FileStatus {
 
-  case object Added extends FileStatus
-  case object Updated extends FileStatus
-  case object Deleted extends FileStatus
-  case object Unchanged extends FileStatus
+  case object StagedAdded extends FileStatus
+  case object StagedUpdated extends FileStatus
+  case object StagedDeleted extends FileStatus
+  case object NotStagedDeleted extends FileStatus
+  case object NotStagedUpdated extends FileStatus
+  case object Untracked extends FileStatus
+
 
 }

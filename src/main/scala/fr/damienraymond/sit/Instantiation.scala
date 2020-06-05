@@ -9,10 +9,10 @@ import fr.damienraymond.sit.domain.model.commit.{CommitHash, OrphanCommit}
 import fr.damienraymond.sit.domain.model.file.{FileChanged, FilePath, FileUpdatedDate, TrackedFiles}
 import fr.damienraymond.sit.domain.model.{branch, change}
 import fr.damienraymond.sit.domain.query.StatusQueryHandler
-import fr.damienraymond.sit.domain.repository.{CommitRepository, CurrentBranchRepository, FileLastUpdateRepository, TrackedFilesRepository}
+import fr.damienraymond.sit.domain.repository._
 import fr.damienraymond.sit.domain.service.change.{IdentifyUpdatedFile, _}
-import fr.damienraymond.sit.infrastructure.repository.{InMemoryCommitRepository, InMemoryCurrentBranchRepository, InMemoryFileLastUpdateRepository, InMemoryTrackedFilesRepository}
-import fr.damienraymond.sit.infrastructure.service.change.{FileSystemFilesImplementation, GetFileLastUpdateImplementation, ReadFileServiceImplementation}
+import fr.damienraymond.sit.infrastructure.repository._
+import fr.damienraymond.sit.infrastructure.service.change.{FileSystemFilesImplementation, GetFileLastUpdateImplementation, GitIgnoreServiceImplementation, ReadFileServiceImplementation}
 
 
 trait Instantiated {
@@ -55,14 +55,21 @@ object Instantiation {
 
       fileSystemFiles: FileSystemFiles = FileSystemFilesImplementation
 
+      stagedFileRepository: StagedFilesRepository <- InMemoryStagedFilesRepository.create
+
+//      _ <- stagedFileRepository.save(file.StagedFiles(Set(testTxt)))
+
       identifyUpdatedFile: IdentifyUpdatedFile = new IdentifyUpdatedFile(fileLastUpdateRepository, getFileLastUpdate)
       identifyChangesService: IdentifyChangesService = new IdentifyChangesService(
+        stagedFileRepository,
         trackedFilesRepository,
         identifyUpdatedFile,
         readFileService,
         fileSystemFiles,
         diffService
       )
+
+      ignoreService: IgnoreService <- GitIgnoreServiceImplementation.create(".gitignore")
 
 
     } yield new Instantiated {
@@ -71,7 +78,7 @@ object Instantiation {
         commitRepository,
         identifyChangesService
       )
-      override implicit val statusQueryHandler: StatusQueryHandler = new StatusQueryHandler(identifyChangesService)
+      override implicit val statusQueryHandler: StatusQueryHandler = new StatusQueryHandler(identifyChangesService, ignoreService)
     }
   }
 

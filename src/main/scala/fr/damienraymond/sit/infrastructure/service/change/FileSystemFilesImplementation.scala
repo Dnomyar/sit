@@ -8,12 +8,6 @@ import zio.IO
 
 object FileSystemFilesImplementation extends FileSystemFiles {
 
-  private val toIgnore = Set(".git/", "/target", ".idea/", ".bloop/")
-
-  // Todo not the responsibility of that
-  private def shouldIgnore(path: String): Boolean =
-    toIgnore.exists(exclusion => path.contains(exclusion))
-
   override def allFiles: IO[Exception, Set[FilePath]] = {
 
     @scala.annotation.tailrec
@@ -32,7 +26,6 @@ object FileSystemFilesImplementation extends FileSystemFiles {
 
     IO(exploreDirectories(Set(new File(".")), Set.empty))
       .flatMap(IO.foreach(_)(f => IO(f.getPath)))
-      .map(_.filterNot(shouldIgnore))
       .map(_.map(FilePath(_)).toSet)
       .mapError(th => new Exception(th))
 

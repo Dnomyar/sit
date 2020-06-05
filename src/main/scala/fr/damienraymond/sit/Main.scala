@@ -3,6 +3,7 @@ package fr.damienraymond.sit
 import fr.damienraymond.ddd.command.CommandBus
 import fr.damienraymond.ddd.query.QueryBus
 import fr.damienraymond.sit.domain.command.CommitCommand
+import fr.damienraymond.sit.domain.model.file.FileStatus
 import fr.damienraymond.sit.domain.query.StatusQuery
 import zio.console._
 import zio.{URIO, ZIO}
@@ -34,7 +35,12 @@ object Main extends zio.App {
           fileStatus <- QueryBus.dispatch(StatusQuery())
           _ <- putStrLn("File status")
           _ <- putStrLn(fileStatus.fileUpdated.toList.sortBy(_._1.path).map{
-            case (file, status) => s"${file.path} $status"
+            case (file, FileStatus.StagedAdded) => s"${scala.Console.GREEN}A  ${scala.Console.RESET}${file.path} - ${FileStatus.StagedAdded}"
+            case (file, FileStatus.StagedDeleted) => s"${scala.Console.GREEN}D  ${scala.Console.RESET}${file.path} - ${FileStatus.StagedDeleted}"
+            case (file, FileStatus.StagedUpdated) => s"${scala.Console.GREEN}M  ${scala.Console.RESET}${file.path} - ${FileStatus.StagedUpdated}"
+            case (file, FileStatus.NotStagedUpdated) => s"${scala.Console.RED} M ${scala.Console.RESET}${file.path} - ${FileStatus.NotStagedUpdated}"
+            case (file, FileStatus.NotStagedDeleted) => s"${scala.Console.RED} D ${scala.Console.RESET}${file.path} - ${FileStatus.NotStagedDeleted}"
+            case (file, FileStatus.Untracked) => s"${scala.Console.RED}?? ${scala.Console.RESET}${file.path} - ${FileStatus.Untracked}"
           }.mkString("\n"))
         } yield ()
 
