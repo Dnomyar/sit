@@ -2,6 +2,51 @@
 
 This project is a playground to experiment with domain modeling, algorithms, data structures and functional effects.
 
+
+## Git internals highlights
+Source: https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain 
+
+### Objects
+Git uses the concept of _Object_. There 3 types of object:
+- **blobs**. A blob basically represents the content of a file. It is stored in a file named after the hash of the content.   
+- **trees**. Trees are used to represent the hierarchy between blobs. A tree contains blobs and other trees with their names. For instance :
+```
+100644 blob dc711f442241823069c499197accce1537f30928    .gitignore
+100644 blob e5d351c3cd44aa1d8c1cb967c7e7fde1dee4b0ad    README.md
+100644 blob 7a010b786eb29b895ba5799306052b996516d63b    build.sbt
+040000 tree 8bac5f27882165d313f5732bb4f140003156c693    project
+040000 tree 163727ec9bd17ef32ee088a52a31fe0b483fa18f    src
+```
+- **commits**. Commits are used to capture :
+    - the `tree` snapshot of the code
+    - the `parent(s)` commits. Usually a commit has only one parent, but it can have 0 to n parents. The first commit does not have any parent. A merge commit has several parents (usually 2). 
+    - the `author`
+    - the `commiter` 
+    - a blank line
+    - the commit `message`
+
+Those files are stored in `.git/objects`.
+
+Useful git commands:
+- `git cat-file` show information about an object
+    - `-p <hash>` show the content of an object. `hash` can be `master^{tree}` to reference the tree object pointed to the last version of master.
+    - `-t <hash>` show the type of object
+- `git hash-object` (explicit)
+- `git update-index` Register file contents in the working tree to the index
+- `git write-tree` 
+
+
+### References
+Working with hashes is not handy, so the concept of _Reference_ was introduced. Here are different types of reference:
+- **HEAD** is a special kind of reference. It stores the current branch being used. In some  cases (when a specific commit is checked-out for instance), it can be referencing commit hash. This is called "detached head".
+- **heads**. Heads are used to reference the last commit (hash) of a branch. 
+- **tags**
+- **remotes**
+
+
+Useful git commands:
+- `git update-ref refs/heads/master <hash>`
+
 ## Details of features
 
 ### Model
