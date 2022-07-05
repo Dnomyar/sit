@@ -1,5 +1,7 @@
 # Sit - Git implementation in Scala
 
+# [Checkout this new project where I record myself implementing git](https://github.com/Dnomyar/git)
+
 This project is a playground to experiment with domain modeling, algorithms, data structures and functional effects.
 
 
